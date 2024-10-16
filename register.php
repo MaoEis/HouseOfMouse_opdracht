@@ -1,51 +1,36 @@
 <?php
-	function canLogin($p_email, $p_password){
-		$conn = new PDO('mysql:host=127.0.0.1;dbname=HouseOfMoose', "root", "");
-		$statement = $conn->prepare("select * from user where email = :email");
-		$statement->bindValue(":email", $p_email);
-		$statement->execute();
+if(!empty($_POST)){
+	$email= $_POST['email'];	
+	$options = [
+		'cost' => 14,
+	];
+	$hash = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
-		$user = $statement->fetch(PDO::FETCH_ASSOC)
-			if($user){
-			$hash = $user['password'];
-			if(password_verify($p_password, $hash)){
-				return true;
-			} else {
-				return false;
-			}
-			
-		} else {
-			return false;
-		}
-	}
-	if(!empty($_POST)){
-		$email= $_POST['email'];
-		$password = $_POST['password'];
-
-		if(
-			canLogin($email,$password)) {
-				session_start();
-				$_SESSION['loggedin'] = true;
-				$_SESSION['email'] = $email;
-				header('Location: index.php');
-			}else{
-				$error = true;
-			}
-	}
+	$conn = new PDO('mysql:host=127.0.0.1;dbname=HouseOfMoose', "root", "");
+	$statement = $conn->prepare("insert into users (email, password) values (:email, :password)");
+	$statement->bindValue(":email", $email);
+	$statement->bindValue(":password", $hash);
+	$statement->execute();
+	// ('".$conn->real_escape_string($email)."', '".$conn->real_escape_string($password)."')");
+	// if($result ==true){
+	// 	//session
+	// 	//redirect naar dashboard?
+	// }
+}
 
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sign up</title>
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="myLogin">
 		<div class="formLogin">
 			<form action="" method="post">
-				<h2>Login here</h2>
+				<h2>Sign up here</h2>
 
 				<?php if( isset($error)):?>
 				<div class="formError">
