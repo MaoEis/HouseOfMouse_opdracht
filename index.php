@@ -7,6 +7,20 @@ if($_SESSION['loggedin'] !== true){
 
 include_once("data.inc.php");
 
+
+    // //sign up
+    // $user = new user();
+    // $user->setFirstname($_POST['firstname']);
+    // //...
+    // $user->save();
+
+    // //LOGIN
+    // if(User::canLogin($_POST['email'], $_POST['password'])) {
+    //     //login
+    // } else {
+    //     //error
+    // }
+    
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
