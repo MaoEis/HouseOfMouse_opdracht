@@ -1,11 +1,17 @@
 <?php
+
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 	function canLogin($p_email, $p_password){
 		$conn = new PDO('mysql:host=127.0.0.1;dbname=HouseOfMoose', "root", "");
 		$statement = $conn->prepare("select * from user where email = :email");
 		$statement->bindValue(":email", $p_email);
 		$statement->execute();
 
-		$user = $statement->fetch(PDO::FETCH_ASSOC)
+		$user = $statement->fetch(PDO::FETCH_ASSOC);
 			if($user){
 			$hash = $user['password'];
 			if(password_verify($p_password, $hash)){
@@ -18,7 +24,7 @@
 			return false;
 		}
 	}
-	if(!empty($_POST)){
+		if(!empty($_POST)){
 		$email= $_POST['email'];
 		$password = $_POST['password'];
 
