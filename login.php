@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 	function canLogin($p_email, $p_password){
-		$conn = new PDO('mysql:host=127.0.0.1;dbname=HouseOfMoose', "root", "");
+		$conn = new PDO('mysql:host=127.0.0.1;dbname=houseofmoose', "root", "");
 		$statement = $conn->prepare("select * from user where email = :email");
 		$statement->bindValue(":email", $p_email);
 		$statement->execute();
