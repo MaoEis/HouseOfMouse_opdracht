@@ -1,21 +1,20 @@
 <?php
-if(!empty($_POST)){
-	$email= $_POST['email'];	
-	$options = [
-		'cost' => 14,
-	];
-	$hash = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+include_once(__DIR__ . "/classes/Users.php");
 
-	$conn = new PDO('mysql:host=127.0.0.1;dbname=HouseOfMoose', "root", "");
-	$statement = $conn->prepare("insert into users (email, password) values (:email, :password)");
-	$statement->bindValue(":email", $email);
-	$statement->bindValue(":password", $hash);
-	$statement->execute();
-	// ('".$conn->real_escape_string($email)."', '".$conn->real_escape_string($password)."')");
-	// if($result ==true){
-	// 	//session
-	// 	//redirect naar dashboard?
-	// }
+if(!empty($_POST)){
+
+	try{
+		$user = new Users();
+		$user->setEmail($_POST['email']);
+		$user->setPassword($_POST['password']);
+
+		$user->save();
+		header('Location: login.php');
+
+	} catch(\Throwable $th) {
+		$error = $th->getMessage();
+	}
+	
 }
 
 ?><!DOCTYPE html>
@@ -49,7 +48,7 @@ if(!empty($_POST)){
 					<input type="password" name="password">
 				</div>
 				<div class="formField">
-					<input type="submit" value="Sign in" class="btn">	
+					<input type="submit" value="Sign me up!" class="btn">	
 				</div>
 				<div class=" label__inline">
   						<input type="checkbox" id="rememberMe">

@@ -5,7 +5,8 @@ if($_SESSION['loggedin'] !== true){
   header('location: login.php');
 }
 
-include_once("data.inc.php");
+include_once(__DIR__ . "/classes/Db.php");
+
 
 
     // //sign up

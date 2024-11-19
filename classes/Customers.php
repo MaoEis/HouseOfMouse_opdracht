@@ -1,6 +1,6 @@
 <?php
 namespace App\Hom;
 
-class Admin extends Users {
+class Customers extends Users {
     
 }

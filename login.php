@@ -3,31 +3,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-	function canLogin($p_email, $p_password){
-		$conn = new PDO('mysql:host=127.0.0.1;dbname=houseofmoose', "root", "");
-		$statement = $conn->prepare("select * from user where email = :email");
-		$statement->bindValue(":email", $p_email);
-		$statement->execute();
-
-		$user = $statement->fetch(PDO::FETCH_ASSOC);
-			if($user){
-			$hash = $user['password'];
-			if(password_verify($p_password, $hash)){
-				return true;
-			} else {
-				return false;
-			}
-			
-		} else {
-			return false;
-		}
-	}
+require_once __DIR__ . '/vendor/autoload.php';
+	
 		if(!empty($_POST)){
 		$email= $_POST['email'];
 		$password = $_POST['password'];
 
-		if(
-			canLogin($email,$password)) {
+		if(App\Hom\Users::canLogin($email, $password)) {
 				session_start();
 				$_SESSION['loggedin'] = true;
 				$_SESSION['email'] = $email;
