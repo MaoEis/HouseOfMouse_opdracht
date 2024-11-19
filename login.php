@@ -1,23 +1,34 @@
 <?php
+session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/vendor/autoload.php';
-	
-		if(!empty($_POST)){
-		$email= $_POST['email'];
-		$password = $_POST['password'];
 
-		if(App\Hom\Users::canLogin($email, $password)) {
-				session_start();
-				$_SESSION['loggedin'] = true;
-				$_SESSION['email'] = $email;
-				header('Location: index.php');
-			}else{
-				$error = true;
-			}
-	}
+use App\Hom\Users;
+
+$error = false;
+
+if (!empty($_POST)) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    try {
+        $user = new Users(); // Create an instance of the Users class
+        if ($user->canLogin($email, $password)) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['email'] = $email;
+            header('Location: index.php');
+            exit(); // Always exit after a header redirect
+        } else {
+            $error = "Invalid email or password.";
+        }
+    } catch (\Throwable $th) {
+        $error = $th->getMessage(); // Catch and display any errors
+    }
+}
 
 ?><!DOCTYPE html>
 <html lang="en">

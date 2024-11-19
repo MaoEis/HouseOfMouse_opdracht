@@ -27,6 +27,7 @@ class Users{
         return $this;
     }
 
+
     //password
     public function getPassword()
     {
