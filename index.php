@@ -14,24 +14,12 @@ include_once(__DIR__ . "/classes/Users.php");
 
 
 
-    // //sign up
-    // $user = new user();
-    // $user->setFirstname($_POST['firstname']);
-    // //...
-    // $user->save();
-
-    //LOGIN
-    if(User::canLogin($_POST['email'], $_POST['password'])) {
-        //login
-    } else {
-        //error
-    }
     
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Keramiek Webshop</title>
+  <title>HouseOfMoose Webshop</title>
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
