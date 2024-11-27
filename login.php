@@ -20,11 +20,18 @@ if (!empty($_POST)) {
     } else {
         try {
             $user = new Users(); // Create an instance of the Users class
-            if ($user->canLogin($email, $password)) {
+             $isAdmin = $user->canLogin($email, $password);
+            if ($isAdmin !== false) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
-                header('Location: index.php');
-                exit(); // Always exit after a header redirect
+                $_SESSION['isAdmin'] = $isAdmin;
+
+                if ($isAdmin == 'admin') { 
+                    header('Location: adminIndex.php');
+                } else {
+                    header('Location: index.php');
+                }
+                exit(); 
             } else {
                 $error = "Invalid email or password.";
             }
@@ -33,8 +40,7 @@ if (!empty($_POST)) {
         }
     }
 }
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

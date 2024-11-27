@@ -62,7 +62,7 @@ class Users{
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($password, $user['password'])) {
-            return true;
+            return $user['isAdmin'];
         } else {
             error_log("Login failed for user: $email");
             return false;
