@@ -10,7 +10,8 @@ class Db {
                 echo "💩";
                 self::$conn = 
                 new PDO
-                ('mysql:host=mysql.railway.internal;dbname=railway', 'root', 'bqemkIoAJAMucwKIgVOPPkanONSUNOoZ');
+                ('mysql:host=localhost;dbname=houseofmoose', 'root', '');
+                // ('mysql:host=mysql.railway.internal;dbname=railway', 'root', 'bqemkIoAJAMucwKIgVOPPkanONSUNOoZ');
                 return self::$conn;
             }
             echo "👑";

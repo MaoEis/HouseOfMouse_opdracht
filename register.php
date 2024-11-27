@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__ . "/classes/Users.php");
+include_once(__DIR__ . "/classes/Db.php");
 
 if(!empty($_POST)){
 
@@ -34,7 +35,7 @@ if(!empty($_POST)){
 				<?php if( isset($error)):?>
 				<div class="formError">
 					<p>
-						⛔️ Sorry, we can't log you in with that email address and password. Can you try again?
+						⛔️ Sorry, we can't register you with that email address and password. Can you try again?
 					</p>
 				</div>
 				<?php endif; ?>
