@@ -1,11 +1,16 @@
 <?php 
-
 session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if($_SESSION['loggedin'] !== true){
   header('location: login.php');
 }
 
 include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/classes/Users.php");
 
 
 

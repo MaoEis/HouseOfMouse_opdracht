@@ -53,25 +53,28 @@ class Users{
     }
 
     //login
-    function canLogin($email, $password){
-		$conn = Db::getConnection();
-		$statement = $conn->prepare("select * from users where email = :email");
-		$statement->bindValue(":email", $email);
-		$statement->execute();
+   function canLogin($email, $password) {
+    try {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
 
-		$user = $statement->fetch(PDO::FETCH_ASSOC);
-			if($user){
-			$hash = $user['password'];
-			if(password_verify($password, $hash)){
-				return true;
-			} else {
-				return false;
-			}
-			
-		} else {
-			return false;
-		}
-	}
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($user && password_verify($password, $user['password'])) {
+            return true;
+        } else {
+            error_log("Login failed for user: $email");
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+        return false;
+    } catch (Exception $e) {
+        error_log("General error: " . $e->getMessage());
+        return false;
+    }
+}
 
      public function save(){
         $conn = Db::getConnection();
