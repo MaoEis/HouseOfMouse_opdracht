@@ -11,5 +11,7 @@
       "email": "r0377155@student.thomasmore.be"
     }
   ],
-  "require": {}
+  "require": {
+    "vlucas/phpdotenv": "^5.6"
+  }
 }

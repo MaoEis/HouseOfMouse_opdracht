@@ -15,12 +15,12 @@ include_once(__DIR__ . "/classes/Db.php");
     // //...
     // $user->save();
 
-    // //LOGIN
-    // if(User::canLogin($_POST['email'], $_POST['password'])) {
-    //     //login
-    // } else {
-    //     //error
-    // }
+    //LOGIN
+    if(User::canLogin($_POST['email'], $_POST['password'])) {
+        //login
+    } else {
+        //error
+    }
     
 ?><!DOCTYPE html>
 <html lang="en">

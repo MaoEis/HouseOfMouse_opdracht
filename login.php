@@ -44,7 +44,7 @@ if (!empty($_POST)) {
 			<form action="" method="post">
 				<h2>Login here</h2>
 
-				<?php if( isset($error)):?>
+				<?php if($error !== false):?>
 				<div class="formError">
 					<p>
 						⛔️ Sorry, we can't log you in with that email address and password. Can you try again?
