@@ -94,7 +94,7 @@ body {
   font-weight: 500;
   margin: 0;
   margin-bottom: 100px;
-  color: #725eff;
+  color: #bb9cf3;
 }
 
 .catBtn {
@@ -127,13 +127,38 @@ body {
   border-bottom: 2px solid #bb9cf3;
 }
 
-.navbarUser form {
+.main form {
   display: flex;
   align-items: center;
+  margin-top: 30px;
 }
 
-.navbarUser input[type="text"] {
+.main input[type="text"] {
   padding: 5px;
-  border: none;
+  width: 300px;
+
+  border: 1px solid black;
   border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main input[type="text"]:focus {
+  border: 2px solid #bb9cf3;
+  outline: none;
+}
+
+.main input[type="submit"] {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 3px;
+  background-color: white;
+  color: black;
+  font-family: "Bricolage Grotesque", sans-serif;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.main input[type="submit"]:active {
+  background-color: #bb9cf3;
+  outline: none;
 }

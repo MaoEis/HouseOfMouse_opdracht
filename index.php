@@ -41,6 +41,10 @@ include_once(__DIR__ . "/classes/Users.php");
     <a href="#">Oil dispenser</a>
     <a href="#">Plate</a>
   </div>
+   <form action="" method="get">
+        <input type="text" name="search">
+        <input type="submit" value="Search">
+      </form>
   </div>
 
   <div class="collection">

@@ -11,9 +11,6 @@
     </div>
     
     <div class="restNav">
-      <!-- <form action="" method="get">
-        <input type="text" name="search">
-      </form> -->
       <a href="logout.php" class="navbar__logout">Logout</a>
     </div>
     
