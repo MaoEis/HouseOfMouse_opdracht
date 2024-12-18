@@ -52,7 +52,7 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
 
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
-    <div class="collentionItem">
+    <div class="collectionItem">
         <!-- <a href="details.php?id=<?php echo $key; ?>" class="collectionImage" style="background-image: url('<?php echo $c['poster'];?>')">
         </a> -->
         <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['Title']; ?></a>
