@@ -29,6 +29,20 @@ include_once(__DIR__ . "/classes/Users.php");
   <div id="keramiek">
   <?php include_once("nav.inc.php"); ?>
   
+  <div class="main">
+    <div class="sloganTitle">
+      <h1 class="homTitle" >House Of Moose</h1>
+      <h3 class="slogan" > A reason to be hom'. </h3>
+    </div>
+  <div class="catBtn"> 
+    <a href="#">All</a>
+    <a href="#">Mug</a>
+    <a href="#">Soap dispenser</a>
+    <a href="#">Oil dispenser</a>
+    <a href="#">Plate</a>
+  </div>
+  </div>
+
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
     <div class="collentionItem">
