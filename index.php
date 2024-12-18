@@ -11,9 +11,12 @@ if($_SESSION['loggedin'] !== true){
 
 include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Users.php");
+include_once(__DIR__ . "/classes/Products.php");
 
-
-
+$db = Db::getConnection();
+$query = $db->prepare("SELECT * FROM products");
+$query->execute();
+$collection = $query->fetchAll(PDO::FETCH_ASSOC);
     
 ?><!DOCTYPE html>
 <html lang="en">
@@ -50,10 +53,10 @@ include_once(__DIR__ . "/classes/Users.php");
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
     <div class="collentionItem">
-        <a href="details.php?id=<?php echo $key; ?>" class="collectionImage" style="background-image: url('<?php echo $c['poster'];?>')">
-        </a>
-        <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['title']; ?></a>
-        <p>€ <?php echo $c['amount']; ?></p>
+        <!-- <a href="details.php?id=<?php echo $key; ?>" class="collectionImage" style="background-image: url('<?php echo $c['poster'];?>')">
+        </a> -->
+        <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['Title']; ?></a>
+        <p>€ <?php echo $c['Price']; ?></p>
     </div>
   <?php endforeach; ?>
   </div>
