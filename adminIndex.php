@@ -12,16 +12,19 @@ if($_SESSION['loggedin'] !== true){
 include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Users.php");
 
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="css/index.css">
+      <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
     <title>HouseOfMoose Dashboard</title>
 </head>
 <body>
       <div id="keramiek">
-  <?php include_once("nav.inc.php"); ?>
+  <?php include_once("navAdmin.inc.php"); ?>
   
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>

@@ -1,52 +1,95 @@
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque-Regular.ttf") format("ttf");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque-Bold.ttf") format("ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
-  background-color: #ffffff;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 200;
 }
-.navbar {
+
+.navbarUser {
+  width: 100%;
+  background-color: #333; /* Dark background color */
+  color: white; /* White text color */
   display: flex;
-  justify-content: space-around;
-  background-color: #81746f;
-  padding: 10px 30px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.navbar a {
+/* Hamburger menu styling
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger .line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 4px 0;
+} */
+
+/* Logo and links styling */
+.navbarUser a {
+  color: white;
   text-decoration: none;
-  color: #ffffff;
-  padding: 20px;
+  margin: 0 15px;
+  transition: color 0.3s;
 }
 
-form {
+.navbarUser a:hover {
+  color: #ddd; /* Lighter color on hover */
+}
+
+/* Search form styling */
+.navbarUser form {
   display: flex;
   align-items: center;
 }
 
-form input {
-  width: 300px;
+.navbarUser input[type="text"] {
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
 }
 
-.collection {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 50px;
-  justify-content: center;
-  margin: 50px;
-}
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbarUser {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.collentionItem {
-  display: flex;
-  flex-direction: column;
-}
-.collectionImage {
-  height: 450px; /* Explicit height */
-  width: 400px; /* Explicit width */
-  background-size: cover; /* Ensures the image covers the container */
-  background-position: center;
-}
+  .navbarUser a {
+    margin: 10px 0;
+  }
 
-.collectionTitle {
-  text-decoration: none;
-  color: black;
-  margin-top: 10px;
-  font-weight: 700;
+  .navbarUser form {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .navbarUser input[type="text"] {
+    width: 100%;
+  }
 }
