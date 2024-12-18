@@ -5,7 +5,7 @@
 
     <div class="btnNav">
       <a class="btnsNav" href="index.php">Shop</a>
-      <a class="btnsNav" href="mylist.php">Our team</a>
+      <a class="btnsNav" href="ourTeam.php">Our team</a>
       <a class="btnsNav" href="mylist.php">My bag</a>
       <a class="btnsNav" href="mylist.php">My profile</a>
     </div>

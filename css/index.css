@@ -170,6 +170,7 @@ body {
   justify-content: center;
   gap: 20px;
   padding: 50px;
+  background-color: #f8f8f8;
 }
 
 .collectionItem {
@@ -182,4 +183,33 @@ body {
   border: 1px solid black;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* teamMembers */
+
+#teamTitle {
+  display: flex;
+  justify-self: center;
+  margin: 75px;
+}
+
+.theTeam {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 50px;
+  background-color: #f8f8f8;
+}
+.teamMember {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: baseline;
+  gap: 20px;
+  padding: 50px;
+  width: 30%;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
 }
