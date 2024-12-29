@@ -220,7 +220,6 @@ input[type="checkbox"]:checked {
 
   border: 1px solid black;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .main input[type="text"]:focus {
@@ -293,4 +292,78 @@ input[type="checkbox"]:checked {
   background-color: white;
   border: 1px solid black;
   border-radius: 10px;
+}
+
+/* Add product */
+
+.addProductTitle {
+  display: flex;
+  justify-self: center;
+  margin-top: 75px;
+  margin-bottom: 50px;
+  color: #bb9cf3;
+}
+
+.addProductForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: baseline;
+  gap: 20px;
+  padding: 50px;
+  width: 30%;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 100px;
+  font-weight: 700;
+}
+
+.newProductForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.newProductForm div {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  gap: 5px;
+  width: 100%;
+}
+
+.addProductForm input {
+  padding: 5px 10px;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.addProductForm input[type="text"]:focus {
+  border: 2px solid #bb9cf3;
+  outline: none;
+}
+
+.addProductForm input[type="submit"] {
+  padding: 7px;
+  margin-top: 20px;
+  border-radius: 3px;
+  background-color: white;
+  color: #bb9cf3;
+  font-family: "Bricolage Grotesque", sans-serif;
+  cursor: pointer;
+  border: 1px solid black;
+  font-weight: 700;
+}
+
+.addProductForm input[type="submit"]:active {
+  background-color: #bb9cf3;
+  outline: none;
+  color: black;
+}
+
+#description {
+  height: 100px;
 }
