@@ -46,9 +46,9 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
-<body>
+<body id="login">
     <div class="myLogin">
         <div class="formLogin">
             <form action="" method="post">
@@ -71,12 +71,12 @@ if (!empty($_POST)) {
                     <input type="password" name="password">
                 </div>
                 <div class="formField">
-                    <input type="submit" value="Sign in" class="btn">    
+                    <input type="submit" value="Sign in" class="btnLogin">    
                 </div>
-                <div class="label__inline">
-                    <input type="checkbox" id="rememberMe">
-                    <label for="rememberMe">Remember me</label>
-                </div>
+               <div class="label__inline">
+  						<input type="checkbox" id="checkbox">
+ 						<label for="checkbox" class="label__inline">Remember me</label>
+				</div>
             </form>
         </div>
     </div>

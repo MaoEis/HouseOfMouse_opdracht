@@ -20,9 +20,90 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100%;
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 200;
   color: #000;
+}
+
+#login {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.myLogin {
+  width: 400px;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  /* box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px; Optional: Adds rounded corners */
+}
+
+.formLogin h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #bb9cf3;
+}
+
+.formField {
+  margin-bottom: 15px;
+}
+
+.formField label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.formError {
+  color: #682020;
+  font-size: smaller;
+}
+
+.formField input[type="text"],
+.formField input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.formField input[type="text"]:hover,
+.formField input[type="password"]:hover {
+  border: 1px solid #bb9cf3;
+}
+
+.btnLogin {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+.btnLogin:hover {
+  background-color: #bb9cf3;
+}
+
+.label__inline {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #bb9cf3;
 }
 
 .navbarUser {
