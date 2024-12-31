@@ -10,7 +10,7 @@ class Products {
     protected $title;
     protected $description;
     protected $amount;
-    protected $category;
+    protected $category_id;
     protected $price;
     protected $height;
     protected $diameter;
@@ -62,18 +62,17 @@ class Products {
     }
 
  
-    public function getCategory()
+   public function getCategoryId()
     {
-        return $this->category;
+        return $this->category_id;
     }
 
-   
-    public function setCategory($category)
+    public function setCategoryId($category_id)
     {
-        $this->category = $category;
-
+        $this->category_id = $category_id;
         return $this;
     }
+
 
 
     public function getPrice()
@@ -147,12 +146,12 @@ class Products {
          echo "Database connection established.<br>";
 
         // Insert product information into the database
-        $sql = "INSERT INTO products (title, description, stockAmount, categoryId, price, height, diameter, width, upload_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, width, upload_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(1, $this->title);
         $stmt->bindParam(2, $this->description);
         $stmt->bindParam(3, $this->amount);
-        $stmt->bindParam(4, $this->category);
+        $stmt->bindParam(4, $this->category_id);
         $stmt->bindParam(5, $this->price);
         $stmt->bindParam(6, $this->height);
         $stmt->bindParam(7, $this->diameter);

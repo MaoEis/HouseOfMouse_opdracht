@@ -6,6 +6,18 @@ include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Products.php");
 include_once(__DIR__ . "/classes/Upload.php");
 
+try {
+    // Fetch categories from the database
+    $conn = Db::getConnection();
+    $sql = "SELECT id, name FROM category";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error fetching categories: " . $e->getMessage();
+    $categories = [];
+}
+
 if (isset($_POST['submit'])) {
     echo "Form submitted.<br>";
     try {
@@ -105,7 +117,11 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div>
                     <label for="category">Category:</label>
-                    <input type="text" name="category" id="category" required>
+                    <select name="category" id="category">
+                        <?php foreach ($categories as $category): ?>
+                        <option  value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div>
                     <label for="price">Price:</label>
