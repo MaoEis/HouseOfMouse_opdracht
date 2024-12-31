@@ -7,17 +7,23 @@ error_reporting(E_ALL);
 
 if($_SESSION['loggedin'] !== true){
   header('location: login.php');
+  exit;
 }
 
 include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Users.php");
 include_once(__DIR__ . "/classes/Products.php");
+include_once(__DIR__ . "/classes/Upload.php");
+
 
 $db = Db::getConnection();
-$query = $db->prepare("SELECT * FROM products");
+$query = $db->prepare("
+    SELECT products.*, uploads.fileName 
+    FROM products, uploads 
+    WHERE products.upload_id = uploads.id
+");
 $query->execute();
 $collection = $query->fetchAll(PDO::FETCH_ASSOC);
-    
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,11 +59,13 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
     <div class="collectionItem">
-        <!-- <a href="details.php?id=<?php echo $key; ?>" class="collectionImage" style="background-image: url('<?php echo $c['poster'];?>')">
-        </a> -->
+       <a href="details.php?id=<?php echo $key; ?>">
+            <img src="/HouseOfMoose_opdracht/uploads/<?php echo $c['fileName']; ?>" alt="<?php echo $c['title']; ?>" class="collectionImage">
+        </a>
         <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['title']; ?></a>
         <p>€ <?php echo $c['price']; ?></p>
     </div>
+    <?php echo '<!-- Image URL: /uploads/' . $c['fileName'] . ' -->'; ?>
   <?php endforeach; ?>
   </div>
   
