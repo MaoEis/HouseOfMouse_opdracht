@@ -55,8 +55,8 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
     <div class="collectionItem">
         <!-- <a href="details.php?id=<?php echo $key; ?>" class="collectionImage" style="background-image: url('<?php echo $c['poster'];?>')">
         </a> -->
-        <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['Title']; ?></a>
-        <p>€ <?php echo $c['Price']; ?></p>
+        <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['title']; ?></a>
+        <p>€ <?php echo $c['price']; ?></p>
     </div>
   <?php endforeach; ?>
   </div>

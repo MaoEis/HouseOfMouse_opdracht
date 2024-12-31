@@ -1,4 +1,80 @@
-<!DOCTYPE html>
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/classes/Products.php");
+include_once(__DIR__ . "/classes/Upload.php");
+
+if (isset($_POST['submit'])) {
+    echo "Form submitted.<br>";
+    try {
+        // Handle file upload
+        $file = $_FILES['file'];
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0) {
+                if ($fileSize < 1000000) {
+                    $fileNameNew = uniqid('', true).".".$fileActualExt;
+                    $fileDestination = 'uploads/'.$fileNameNew;
+                    if (move_uploaded_file($fileTmpName, $fileDestination)) {
+                        echo "File uploaded successfully.<br>";
+
+                        $upload = new Upload();
+                        $upload->setFileName($fileNameNew)
+                               ->setFilePath($fileDestination)
+                               ->setFileSize($fileSize)
+                               ->setFileType($fileType);
+
+                        // Save the upload information to the database
+                        $uploadId = $upload->save();
+                        echo "Upload saved with ID: $uploadId<br>";
+
+                        // Create a new product instance
+                        $product = new Products();
+                        $product->setTitle($_POST['title'])
+                                ->setDescription($_POST['description'])
+                                ->setAmount($_POST['amount'])
+                                ->setCategory($_POST['category'])
+                                ->setPrice($_POST['price'])
+                                ->setHeight($_POST['height'])
+                                ->setDiameter($_POST['diameter'])
+                                ->setUploadId($uploadId);  // Save the file path as picture
+
+                        // Save the product to the database
+                        if ($product->save()) {
+                            echo "Product added successfully!";
+                        } else {
+                            echo "Failed to add product.";
+                        }
+                    } else {
+                        echo "Failed to move uploaded file.";
+                    }
+                } else {
+                    echo "Your file is too big!";
+                }
+            } else {
+                echo "There was an error uploading your file!";
+            }
+        } else {
+            echo "You cannot upload files of this type!";
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +90,7 @@
             Add new product
         </h1>
         <div class="newProductForm">
-            <form class="addProductForm" action="" method="post">
+            <form class="addProductForm" action="" method="post"  enctype="multipart/form-data">
                 <div>
                     <label for="title">Title:</label>
                     <input type="text" name="title" id="title" required>
@@ -44,11 +120,18 @@
                     <input type="number" name="diameter" id="diameter" required min="0">
                 </div>
                 <div>
-                    <label for="picture">Picture: </label>
-                    <input type="text" name="picture" id="picture" required>
+                    <label for="width">Width:</label>
+                    <input type="number" name="width" id="width" required min="0">
                 </div>
-                
-        <input type="submit" value="Add product">
+                <div>
+                    <label for="picture">Picture:</label>
+                    <input type="file" name="file" id="prodPic" required>
+                    <!-- <input type="text" name="picture" id="picture" required> -->
+                    <!-- <form action ="upload.php" method ="POST" enctype ="multipart/form-data">
+                    <input type="file" name="file" id="filePic" required>
+                    <button type="submit" name ="submit">btn</button> -->
+                </div>
+        <input type="submit" name="submit" value="Add product">
       </form>
         </div>
     </div>
