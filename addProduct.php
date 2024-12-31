@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
                         $product->setTitle($_POST['title'])
                                 ->setDescription($_POST['description'])
                                 ->setAmount($_POST['amount'])
-                                ->setCategory($_POST['category'])
+                                ->setCategoryId($_POST['category_id'])
                                 ->setPrice($_POST['price'])
                                 ->setHeight($_POST['height'])
                                 ->setDiameter($_POST['diameter'])
@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div>
                     <label for="category">Category:</label>
-                    <select name="category" id="category">
+                    <select name="category_id" id="category">
                         <?php foreach ($categories as $category): ?>
                         <option  value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
                         <?php endforeach; ?>
