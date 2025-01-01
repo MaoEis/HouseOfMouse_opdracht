@@ -59,13 +59,12 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
     <div class="collectionItem">
-       <a href="details.php?id=<?php echo $key; ?>">
+       <a href="productPage.php?id=<?php echo $c['id']; ?>">
             <img src="/HouseOfMoose_opdracht/uploads/<?php echo $c['fileName']; ?>" alt="<?php echo $c['title']; ?>" class="collectionImage">
         </a>
-        <a class="collectionTitle" href="details.php?id=<?php echo $key; ?>"><?php echo $c['title']; ?></a>
+        <a class="collectionTitle" href="productPage.php?id=<?php echo  $c['id']; ?>"><?php echo $c['title']; ?></a>
         <p>€ <?php echo $c['price']; ?></p>
     </div>
-    <?php echo '<!-- Image URL: /uploads/' . $c['fileName'] . ' -->'; ?>
   <?php endforeach; ?>
   </div>
   
