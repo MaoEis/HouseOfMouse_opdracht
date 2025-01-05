@@ -63,7 +63,7 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
             <img src="/HouseOfMoose_opdracht/uploads/<?php echo $c['fileName']; ?>" alt="<?php echo $c['title']; ?>" class="collectionImage">
         </a>
         <a class="collectionTitle" href="productPage.php?id=<?php echo  $c['id']; ?>"><?php echo $c['title']; ?></a>
-        <p>€ <?php echo $c['price']; ?></p>
+        <button class="indexAddBtn">ADD TO BAG | € <?php echo $c['price']; ?> </button>
     </div>
   <?php endforeach; ?>
   </div>

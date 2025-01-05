@@ -299,6 +299,18 @@ input[type="checkbox"]:checked {
   border-radius: 0 0 9px 9px;
 }
 
+.indexAddBtn {
+  border-radius: 0 0 9px 9px;
+}
+
+.adminEdit {
+  border-radius: 0 0 0 9px;
+  border-right: 1px solid black;
+}
+.adminDel {
+  border-radius: 0 0 9px 0;
+}
+
 .indexAddBtn:hover {
   background-color: #f5b301; /* Change to your desired hover color */
 }
@@ -308,6 +320,10 @@ input[type="checkbox"]:checked {
   color: white; /* Change to your desired hover color */
 }
 
+.adminIndexBtns {
+  display: flex;
+  width: 100%;
+}
 /* teamMembers */
 
 #teamTitle {
