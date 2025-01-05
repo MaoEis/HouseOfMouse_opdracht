@@ -50,33 +50,79 @@ if ($stmt->execute()) {
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-      $('.adminDel').click(function() {
-          var productId = $(this).data('product-id');
-          console.log("Delete button clicked, product ID:", productId);
+    function showCustomModal(message) {
+        $('#modalMessage').text(message);
+        $('#customModal').fadeIn();
 
-          if (confirm('Are you sure you want to delete this product?')) {
-              $.ajax({
-                  url: 'adminIndex.php',
-                  type: 'POST',
-                  data: { id: productId, action: 'delete' },
-                  success: function(response) {
-    console.log("AJAX request successful, response:", response);
-    console.log("Response received:", JSON.stringify(response.trim()));
-    if (response.trim() === 'success') { // Use trim() here
-        alert('Product deleted successfully.');
-        location.reload(); // Reload the page
-    } else {
-        alert('Failed to delete the product.');
+        // Close modal when clicking the close button
+        $('#closeModal').click(function() {
+            $('#customModal').fadeOut();
+        });
+
+        // Close modal when clicking outside the modal content
+        $(window).click(function(event) {
+            if ($(event.target).is('#customModal')) {
+                $('#customModal').fadeOut();
+            }
+        });
     }
-},
-                  error: function(xhr, status, error) {
-    console.error("AJAX request failed:", xhr.responseText, status, error);
-}
-              });
-          }
-      });
-  });
 
+    let productIdToDelete = null;
+
+    function showConfirmModal(callback) {
+        $('#confirmModal').fadeIn();
+
+        // Handle Yes button
+        $('#confirmYes').off().click(function() {
+            $('#confirmModal').fadeOut();
+            if (callback) callback(true);
+        });
+
+        // Handle No button
+        $('#confirmNo').off().click(function() {
+            $('#confirmModal').fadeOut();
+            if (callback) callback(false);
+        });
+
+        // Close modal when clicking outside the modal content
+        $(window).click(function(event) {
+            if ($(event.target).is('#confirmModal')) {
+                $('#confirmModal').fadeOut();
+                if (callback) callback(false);
+            }
+        });
+    }
+
+    $('.adminDel').click(function() {
+        productIdToDelete = $(this).data('product-id');
+        console.log("Delete button clicked, product ID:", productIdToDelete);
+
+        showConfirmModal(function(isConfirmed) {
+            if (isConfirmed) {
+                $.ajax({
+                    url: 'adminIndex.php',
+                    type: 'POST',
+                    data: { id: productIdToDelete, action: 'delete' },
+                    success: function(response) {
+                        console.log("AJAX request successful, response:", response);
+                        if (response.trim() === 'success') {
+                            showCustomModal('Product deleted successfully.');
+                            $('[data-product-id="' + productIdToDelete + '"]').closest('.collectionItem').remove();
+                        } else {
+                            showCustomModal('Failed to delete the product. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX request failed:", xhr.responseText, status, error);
+                        showCustomModal('An error occurred. Please try again later.');
+                    }
+                });
+            } else {
+                console.log("User canceled the deletion.");
+            }
+        });
+    });
+});
 </script>
 </head>
 <body>
@@ -115,6 +161,21 @@ $(document).ready(function() {
         </div>
     </div>
   <?php endforeach; ?>
+  </div>
+</div>
+<div id="confirmModal" class="modal">
+  <div class="modalContent">
+    <p id="confirmMessage">Are you sure you want to delete this product?</p>
+    <div class="modalButtons">
+      <button id="confirmYes" class="confirmBtn">Yes</button>
+      <button id="confirmNo" class="confirmBtn">No</button>
+    </div>
+  </div>
+</div>
+<div id="customModal" class="modal">
+  <div class="modalContent">
+    <span id="closeModal" class="closeBtn">&times;</span>
+    <p id="modalMessage"></p>
   </div>
 </div>
 </body>
