@@ -20,7 +20,7 @@ $teamMember = $query->fetchAll(PDO::FETCH_ASSOC);
 
 </head>
 <body>
-    <?php include_once("nav.inc.php"); ?>
+    <?php include_once("navAdmin.inc.php"); ?>
     <h3 class="slogan" id="teamTitle" > Maak kennis met ons Team. </h3>
     <div class="theTeam">
         <?php foreach($teamMember as $key => $t): ?>
@@ -28,8 +28,11 @@ $teamMember = $query->fetchAll(PDO::FETCH_ASSOC);
             <img src="/HouseOfMoose_opdracht/uploads/<?php echo $t['image']; ?>" alt="img" class="memPic">
             <h4 class="memberTitle"><?php echo $t['name']; ?></h4>
             <p class="memberDescr" ><?php echo $t['description'];?></p>
+              <div class="adminIndexBtns" id="adminBtns">
+          <button class="indexAddBtnAdmin adminEdit"> EDIT </button>
+          <button class="indexAddBtnAdmin adminDel"> DELETE </button>
         </div>
-        
+        </div>
           <?php endforeach; ?>
     </div>
 </body>
