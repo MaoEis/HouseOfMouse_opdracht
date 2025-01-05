@@ -9,13 +9,30 @@ include_once(__DIR__ . "/classes/Upload.php");
 try {
     // Fetch categories from the database
     $conn = Db::getConnection();
+    
+    // Fetch categories
     $sql = "SELECT id, name FROM category";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch colors
+    $sql = "SELECT id, name FROM colors";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $colors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch materials
+    $sql = "SELECT id, name FROM materials";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
-    echo "Error fetching categories: " . $e->getMessage();
+    echo "Error fetching data: " . $e->getMessage();
     $categories = [];
+    $colors = [];
+    $materials = [];
 }
 
 if (isset($_POST['submit'])) {
@@ -123,6 +140,23 @@ if (isset($_POST['submit'])) {
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div>
+                    <label for="color_id">Color:</label>
+                    <select name="color_id" id="color_id" required>
+                        <?php foreach ($colors as $color): ?>
+                        <option value="<?php echo $color['id']; ?>"><?php echo $color['name']; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </div>
+                <div>
+                    <label for="material_id">Metal material:</label>
+                    <select name="material_id" id="material_id" required>
+                        <?php foreach ($materials as $material): ?>
+                        <option value="<?php echo $material['id']; ?>"><?php echo $material['name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <div>
                     <label for="price">Price:</label>
                     <input type="number" name="price" id="price" required min="0">
