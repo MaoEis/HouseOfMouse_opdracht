@@ -8,7 +8,6 @@ class Db {
             try {
                 self::$conn = new PDO('mysql:host=localhost;dbname=houseofmoose', 'root', '');
                 self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "Database connection established.<br>";
             } catch (PDOException $e) {
                 die("Database connection failed: " . $e->getMessage());
             }

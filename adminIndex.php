@@ -1,6 +1,6 @@
 <?php 
 session_start();
-
+ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -24,6 +24,22 @@ $query = $db->prepare("
 ");
 $query->execute();
 $collection = $query->fetchAll(PDO::FETCH_ASSOC);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['id'])) {
+    $productId = $_POST['id'];
+
+    // Delete query
+    $sql = "DELETE FROM products WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+if ($stmt->execute()) {
+    echo 'success';
+    exit();
+} else {
+    echo 'error';
+    exit();
+}
+}
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +47,37 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
   <title>HouseOfMoose Webshop</title>
   <link rel="stylesheet" href="css/index.css">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+      $('.adminDel').click(function() {
+          var productId = $(this).data('product-id');
+          console.log("Delete button clicked, product ID:", productId);
 
+          if (confirm('Are you sure you want to delete this product?')) {
+              $.ajax({
+                  url: 'adminIndex.php',
+                  type: 'POST',
+                  data: { id: productId, action: 'delete' },
+                  success: function(response) {
+    console.log("AJAX request successful, response:", response);
+    console.log("Response received:", JSON.stringify(response.trim()));
+    if (response.trim() === 'success') { // Use trim() here
+        alert('Product deleted successfully.');
+        location.reload(); // Reload the page
+    } else {
+        alert('Failed to delete the product.');
+    }
+},
+                  error: function(xhr, status, error) {
+    console.error("AJAX request failed:", xhr.responseText, status, error);
+}
+              });
+          }
+      });
+  });
+
+</script>
 </head>
 <body>
 
@@ -65,13 +111,11 @@ $collection = $query->fetchAll(PDO::FETCH_ASSOC);
         <a class="collectionTitle" href="productPage.php?id=<?php echo  $c['id']; ?>"><?php echo $c['title']; ?></a>
         <div class="adminIndexBtns" id="adminBtns">
           <button class="indexAddBtnAdmin adminEdit" > EDIT </button>
-          <button class="indexAddBtnAdmin adminDel"> DELETE </button>
+          <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
         </div>
     </div>
   <?php endforeach; ?>
   </div>
-  
 </div>
-
 </body>
 </html>
