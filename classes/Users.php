@@ -128,4 +128,46 @@ class Users{
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         return $user; // Returns a single user ID or false if not found
 }
+
+private function sanitize($data) {
+    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+}
+
+public static function getCurrentUser($email) {
+    $conn = Db::getConnection();
+    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+
+    //function for changing password
+    public function changePassword($oldPassword, $newPassword) {
+          if (!$this->email) {
+            throw new Exception('Email address is not set');
+        }
+
+        $conn = Db::getConnection();
+
+        $statement = $conn->prepare("SELECT password FROM users WHERE email = :email");
+        $statement->bindValue(':email', $this->email);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (password_verify($oldPassword, $user['password'])) {
+            $options = [
+                'cost' => 13,
+            ];
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT, $options);
+            $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
+            $statement->bindValue(':password', $hashedPassword);
+            $statement->bindValue(':email', $this->email);
+            $statement->execute();
+            return true;
+        } else {
+           throw new Exception('Old password is incorrect');
+                    $result['div'] = 'current_password';
+        } 
+    } 
 }

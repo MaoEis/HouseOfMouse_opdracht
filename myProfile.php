@@ -19,10 +19,22 @@
             <h3 class="profTitle">Personal Information</h3>
             <div class="profEmailInfo">
                 <h4 class="profEmail">my email:</h4>
-                <p class="profEmail"><?php echo $user['email']; ?></p>
+                <p class="profEmail"><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div class="profPassw">
-                <a class="changepasswordBtn" href="#">Change password</a>
+                <h4 class="profPassw">Change password:</h4>
+                <form id="passwordform">
+                    <label for="current_password">Current password:</label>
+                    <input type="password" id="current_password" name="current_password" required>
+                    <label for="new_password">New password:</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                    <label for="confirm_password">Confirm new password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+
+                    <div class="error hidden" id="error"></div>
+
+                    <button type="submit" class="changepasswordBtn">Change password</button>
+                </form>
             </div>
             </div>
             <div class="myOrders">
@@ -35,5 +47,6 @@
             </div>
         </div>
     </div>
+    <script src="js/password.js"></script>
 </body>
 </html>
