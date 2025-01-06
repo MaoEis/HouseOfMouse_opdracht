@@ -933,6 +933,13 @@ input[type="checkbox"]:checked {
   margin-bottom: 15px;
 }
 
+.profPassw {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  gap: 10px;
+  width: 100%;
+}
 .changepasswordBtn {
   padding: 10px;
   background-color: white;
@@ -952,4 +959,27 @@ input[type="checkbox"]:checked {
   background-color: #f5b301;
   color: black;
   border: none;
+}
+
+.myCurrencyAmount {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding-bottom: 50px;
+}
+
+.currencyTitle {
+  font-size: 2em;
+  font-weight: 900;
+  color: black;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
