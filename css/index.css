@@ -52,6 +52,20 @@ body {
   color: #bb9cf3;
 }
 
+.regInsteadField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: smaller;
+}
+.regInstead {
+  text-align: center;
+  padding-top: 40px;
+  text-decoration: none;
+  color: #bb9cf3;
+}
+
 .formField {
   margin-bottom: 15px;
 }

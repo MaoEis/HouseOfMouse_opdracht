@@ -82,10 +82,11 @@ if (isset($_POST['submit'])) {
 
                         // Save the product to the database
                         if ($product->save()) {
-                            echo "Product added successfully!";
-                        } else {
-                            echo "Failed to add product.";
-                        }
+    echo "<script>window.productAdded = true;</script>";
+    echo "<script>window.productId = {$product->getId()};</script>";
+} else {
+    echo "Failed to add product.";
+}
                     } else {
                         echo "Failed to move uploaded file.";
                     }
@@ -109,8 +110,39 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Add new HouseOfMooseproduct</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+  if (window.productAdded) {
+    // Show success modal
+    const successModal = document.getElementById("successModalAdd");
+    successModal.style.display = "block";
+
+    // Button actions
+    document
+      .getElementById("seeProductBtnAdd")
+      .addEventListener("click", function () {
+        // Redirect to the product page with the product ID
+        window.location.href = `productPage.php?id=${window.productId}`;
+      });
+
+    document
+      .getElementById("addAnotherBtnAdd")
+      .addEventListener("click", function () {
+        // Reload the page for adding another product
+        window.location.reload();
+      });
+
+    // Close modal when clicking outside of it
+    window.addEventListener("click", function (event) {
+      if (event.target === successModal) {
+        successModal.style.display = "none";
+      }
+    });
+  }
+});
+
+    </script>
 </head>
 <body>
     <div>
@@ -185,5 +217,14 @@ if (isset($_POST['submit'])) {
       </form>
         </div>
     </div>
+    <div id="successModalAdd" class="modalAdd">
+    <div class="modalContentAdd">
+        <p>Product successfully added!</p>
+        <div class="modalButtonsAdd">
+            <button id="seeProductBtnAdd" class="modalBtnAdd">See Product</button>
+            <button id="addAnotherBtnAdd" class="modalBtnAdd">Add Another Product</button>
+        </div>
+    </div>
+                        </div>
 </body>
 </html>

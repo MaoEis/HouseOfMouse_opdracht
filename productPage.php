@@ -1,5 +1,12 @@
 <?php
+session_start();
 include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/classes/Reviews.php");
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit;
+}
 
 if (isset($_GET['id'])) {
     $productId = $_GET['id'];
@@ -16,15 +23,42 @@ if (isset($_GET['id'])) {
     $query->execute();
     $product = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($product) {
-        // Include the HTML template and pass the product data
-        include 'productTemplate.php';
-    } else {
-        echo "Product not found.";
-    }
 } else {
     echo "No product ID specified.";
 }
+
+$product_id = $_GET['product_id']; // Assuming product_id is passed as a query parameter
+
+try {
+    $conn = Db::getConnection();
+    $sql = "SELECT * FROM reviews WHERE product_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(1, $product_id);
+    $stmt->execute();
+    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Database error: " . $e->getMessage();
+    $reviews = [];
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        $review = new Reviews();
+        $review->setUserId($_SESSION['user_id'])
+               ->setProductId($_POST['product_id'])
+               ->setRating($_POST['rating'])
+               ->setComment($_POST['comment']);
+
+        if ($review->save()) {
+            echo "Review submitted successfully.";
+        } else {
+            echo "Failed to submit review.";
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,27 +96,29 @@ if (isset($_GET['id'])) {
             <div class="reviewSection">
                 <h3>REVIEWS:</h3>
                 <div class="reviews">
-                    <?php foreach ($reviews as $review): ?>
-                        <div class="review">
-                            <div class="star-rating">
-                                <?php for ($i = 0; $i < $review['rating']; $i++): ?>
-                                    <span class="star">★</span>
-                                <?php endfor; ?>
-                            </div>
-                            <p class="comment"><?php echo htmlspecialchars($review['comment']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php if (!empty($reviews)): ?>
+    <?php foreach ($reviews as $review): ?>
+        <div class="review">
+            <p>User ID: <?php echo htmlspecialchars($review['user_id']); ?></p>
+            <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
+            <p>Comment: <?php echo htmlspecialchars($review['comment']); ?></p>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>No reviews yet.</p>
+<?php endif; ?>
 
                 <h3>ADD REVIEW:</h3>
-                <form class="reviewForm" action="submit_review.php" method="POST">
+                
+                <form class="reviewForm" action="#" method="POST">
                     <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                     <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                     <div class="star-rating">
-                        <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="5 stars">5</label>
-                        <input type="radio" id="star4" name="rating" value="4" required /><label for="star4" title="4 stars">4</label>
-                        <input type="radio" id="star3" name="rating" value="3" required /><label for="star3" title="3 stars">3</label>
-                        <input type="radio" id="star2" name="rating" value="2" required /><label for="star2" title="2 stars">2</label>
-                            <input type="radio" id="star1" name="rating" value="1" required /><label for="star1" title="1 star">1</label>
+                        <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="5 stars"></label>
+                        <input type="radio" id="star4" name="rating" value="4" required /><label for="star4" title="4 stars"></label>
+                        <input type="radio" id="star3" name="rating" value="3" required /><label for="star3" title="3 stars"></label>
+                        <input type="radio" id="star2" name="rating" value="2" required /><label for="star2" title="2 stars"></label>
+                        <input type="radio" id="star1" name="rating" value="1" required /><label for="star1" title="1 star"></label>
                     </div>
                     <textarea name="comment" id="comment" required></textarea>
                     <button class="revBtn" type="submit">Submit</button>

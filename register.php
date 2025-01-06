@@ -55,6 +55,9 @@ if(!empty($_POST)){
   						<input type="checkbox" id="checkbox">
  						<label for="checkbox" class="label__inline">Remember me</label>
 				</div>
+				<div class="regInsteadField">
+                    <a class="regInstead" href="login.php">have an account? Login here.</a>
+                </div>
 			</form>
 		</div>
 	</div>

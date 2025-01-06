@@ -143,7 +143,6 @@ class Products {
     try {
         // Database connection
         $conn = Db::getConnection();
-         echo "Database connection established.<br>";
 
         // Insert product information into the database
         $sql = "INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, width, upload_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -168,6 +167,47 @@ class Products {
     } catch (PDOException $e) {
          echo "Database error: " . $e->getMessage() . "<br>";
         throw new Exception("Database error: " . $e->getMessage());
+    }
+}
+   public function getId() {
+        return $this->id; // Return the product ID
+    }
+
+    public function getProducts($category = '', $search = '') {
+    try {
+        $conn = Db::getConnection();
+        $sql = "
+            SELECT products.*, uploads.fileName 
+            FROM products 
+            LEFT JOIN uploads ON products.upload_id = uploads.id
+            WHERE 1=1
+        ";
+
+        // Apply category filter
+        if (!empty($category)) {
+            $sql .= " AND products.category_id = :category";
+        }
+
+        // Apply search filter
+        if (!empty($search)) {
+            $sql .= " AND (products.title LIKE :search OR products.description LIKE :search)";
+        }
+
+        $stmt = $conn->prepare($sql);
+
+        if (!empty($category)) {
+            $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+        }
+        if (!empty($search)) {
+            $searchTerm = '%' . $search . '%';
+            $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching products: " . $e->getMessage());
     }
 }
 

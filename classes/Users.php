@@ -9,6 +9,7 @@ include_once(__DIR__ . "/Db.php");
 class Users{
     protected $email;
     protected $password;
+    protected $currency;
 
     //email
     public function getEmail()
@@ -52,8 +53,21 @@ class Users{
             return $this;
     }
 
+        public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
     //login
-   function canLogin($email, $password) {
+  function canLogin($email, $password) {
     try {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
@@ -62,7 +76,10 @@ class Users{
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($password, $user['password'])) {
-            return $user['isAdmin'];
+            return [
+                'user_id' => $user['id'],    // Return the user ID
+                'isAdmin' => $user['isAdmin'] // Return the isAdmin value
+            ];
         } else {
             error_log("Login failed for user: $email");
             return false;
@@ -78,17 +95,37 @@ class Users{
 
      public function save(){
         $conn = Db::getConnection();
+
+        if ($this->userExists()) {
+            throw new Exception('Email already in use');
+        } 
         $statement = $conn->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', $this->password);
-        return $statement->execute();
+        $statement->execute();
+
+        header('Location: login.php');
+        exit();
         }
 
-    //   public static function getAll(){
-    //     $conn = Db::getConnection();
-    //     $statement = $conn->query('SELECT * FROM users');
-    //     $statement->execute();
-    //     return $statement->fetchAll(PDO::FETCH_ASSOC);
-    //     }
+        // af private function for userExists()
+        private function userExists(){
+            $conn = Db::getConnection();
+            $statement = $conn->prepare('SELECT * FROM users WHERE email = :email');
+            $statement->bindValue(':email', $this->email);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            return $user;
+        }
+  
 
+        //function to get userid
+        public function getUserId($user_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare('SELECT id FROM users WHERE id = :user_id');
+        $statement->bindValue(':user_id', $user_id);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        return $user; // Returns a single user ID or false if not found
+}
 }
