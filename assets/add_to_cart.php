@@ -1,53 +1,36 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['message' => 'User not logged in']);
-    exit;
-}
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json');
 
-$productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;
-$productName = isset($_POST['product_name']) ? $_POST['product_name'] : null;
-
-echo "Product ID: " . $productId . ", Product Name: " . $productName;
-
-// Ensure user is logged in
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    echo json_encode(['message' => 'Please log in first.']);
+    echo json_encode(['message' => 'Unauthorized']);
     exit;
 }
 
-// Assuming you set the user_id in session after user logs in
-if (isset($_POST['product_id']) && isset($_SESSION['user_id'])) {
-    $productId = (int)$_POST['product_id'];
-    $userId = (int)$_SESSION['user_id'];
+include_once(__DIR__ . "/../classes/Db.php");
+include_once(__DIR__ . "/../classes/Cart.php");
 
-    // Validate that the product_id and user_id are positive integers
-    if ($productId <= 0 || $userId <= 0) {
-        echo json_encode(['message' => 'Invalid product or user data']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userId = $_SESSION['user_id']; // Assuming user_id is stored in session
+    $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+    $quantity = 1; // Default quantity
+
+    if (!$productId) {
+        echo json_encode(['message' => 'Invalid product ID']);
         exit;
     }
 
-    // Continue with the process if the validation passes
-    include_once('classes/Db.php');
-    include_once('classes/Cart.php');
+    $cart = new Cart();
+    $success = $cart->addToCart($userId, $productId, $quantity);
 
-    $productName = isset($_POST['product_name']) ? $_POST['product_name'] : null;
-
-    if ($productId && $productName) {
-        $cart = new Cart();
-        if ($cart->addToCart($userId, $productId)) {
-            echo json_encode(['message' => 'Product added to your cart successfully.']);
-        } else {
-            echo json_encode(['message' => 'Failed to add product to cart.']);
-        }
+    if ($success) {
+        echo json_encode(['message' => 'Product added to cart successfully']);
     } else {
-        echo json_encode(['message' => 'Invalid product data.']);
+        echo json_encode(['message' => 'Failed to add product to cart']);
     }
 } else {
-    echo json_encode(['message' => 'Invalid product data or user session']);
+    echo json_encode(['message' => 'Invalid request method']);
+    exit;
 }
 ?>

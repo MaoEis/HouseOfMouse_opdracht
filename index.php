@@ -100,7 +100,7 @@ $(".indexAddBtn").click(function() {
         var productName = $(this).data("product-name");
 
         $.ajax({
-            url: 'add_to_cart.php',
+            url: 'assets/add_to_cart.php',
             method: 'POST',
             data: {
                 product_id: productId,
