@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
 
-    // Controleer of het nieuwe wachtwoord overeenkomt
+    
     if ($newPassword !== $confirmPassword) {
         $error = [
             "status" => "error",

@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
   if (window.productAdded) {
     // Show success modal
     const successModal = document.getElementById("successModalAdd");
-    successModal.style.display = "block";
+    successModal.style.display = "flex";
 
     // Button actions
     document
@@ -131,6 +131,9 @@ if (isset($_POST['submit'])) {
       .addEventListener("click", function () {
         // Reload the page for adding another product
         window.location.reload();
+       if (event.target === successModal) {
+        successModal.style.display = "none";
+      }
       });
 
     // Close modal when clicking outside of it
@@ -151,70 +154,68 @@ if (isset($_POST['submit'])) {
             Add new product
         </h1>
         <div class="newProductForm">
-            <form class="addProductForm" action="" method="post"  enctype="multipart/form-data">
-                <div>
-                    <label for="title">Title:</label>
-                    <input type="text" name="title" id="title" required>
+            <form class="addProductForm totalForm" action="" method="post"  enctype="multipart/form-data">
+                <div class="addProductPicture">
+                    <label class="addProductPictureLabel" for="picture">Picture:</label>
+                    <input type="file" name="file" id="prodPic" required>
                 </div>
-                <div>
-                    <label for="description">Description:</label>
-                    <input type="text" name="description" id="description" required>
-                </div>
-                <div>
-                    <label for="amount">Amount:</label>
-                    <input type="number" name="amount" id="amount" required min="0">
-                </div>
-                <div>
-                    <label for="category">Category:</label>
-                    <select name="category_id" id="category">
-                        <?php foreach ($categories as $category): ?>
-                        <option  value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
-                        <?php endforeach; ?>
+                <div class="addProductFormInfo">
+                    <div>
+                        <label for="title">Title:</label>
+                        <input type="text" name="title" id="title" required>
+                    </div>
+                    <div>
+                        <label for="description">Description:</label>
+                        <input type="text" name="description" id="description" required>
+                    </div>
+                    <div>
+                        <label for="amount">Amount:</label>
+                        <input type="number" name="amount" id="amount" required min="0">
+                    </div>
+                    <div>
+                        <label for="category">Category:</label>
+                        <select name="category_id" id="category">
+                            <?php foreach ($categories as $category): ?>
+                            <option  value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                            <?php endforeach; ?>
                     </select>
-                </div>
-                <div>
-                    <label for="color_id">Color:</label>
-                    <select name="color_id" id="color_id" required>
-                        <?php foreach ($colors as $color): ?>
-                        <option value="<?php echo $color['id']; ?>"><?php echo $color['name']; ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </div>
-                <div>
-                    <label for="material_id">Metal material:</label>
-                    <select name="material_id" id="material_id" required>
-                        <?php foreach ($materials as $material): ?>
+                    </div>
+                    <div>
+                       <label for="color_id">Color:</label>
+                       <select name="color_id" id="color_id" required>
+                           <?php foreach ($colors as $color): ?>
+                           <option value="<?php echo $color['id']; ?>"><?php echo $color['name']; ?></option>
+                       <?php endforeach; ?>
+                       </select>
+                    </div>
+                    <div>
+                        <label for="material_id">Metal material:</label>
+                        <select name="material_id" id="material_id" required>
+                            <?php foreach ($materials as $material): ?>
                         <option value="<?php echo $material['id']; ?>"><?php echo $material['name']; ?></option>
                         <?php endforeach; ?>
-                    </select>
-                </div>
+                        </select>
+                    </div>
 
-                <div>
-                    <label for="price">Price:</label>
-                    <input type="number" name="price" id="price" required min="0">
+                    <div>
+                        <label for="price">Price:</label>
+                        <input type="number" name="price" id="price" required min="0">
+                    </div>
+                    <div>
+                        <label for="height">Height:</label>
+                        <input type="number" name="height" id="height" required min="0">
+                    </div>
+                    <div>
+                        <label for="diameter">Diameter:</label>
+                        <input type="number" name="diameter" id="diameter" required min="0">
+                    </div>
+                    <div>
+                        <label for="width">Width:</label>
+                        <input type="number" name="width" id="width" required min="0">
+                    </div>
+                    <input type="submit" name="submit" value="Add product">
                 </div>
-                <div>
-                    <label for="height">Height:</label>
-                    <input type="number" name="height" id="height" required min="0">
-                </div>
-                <div>
-                    <label for="diameter">Diameter:</label>
-                    <input type="number" name="diameter" id="diameter" required min="0">
-                </div>
-                <div>
-                    <label for="width">Width:</label>
-                    <input type="number" name="width" id="width" required min="0">
-                </div>
-                <div>
-                    <label for="picture">Picture:</label>
-                    <input type="file" name="file" id="prodPic" required>
-                    <!-- <input type="text" name="picture" id="picture" required> -->
-                    <!-- <form action ="upload.php" method ="POST" enctype ="multipart/form-data">
-                    <input type="file" name="file" id="filePic" required>
-                    <button type="submit" name ="submit">btn</button> -->
-                </div>
-        <input type="submit" name="submit" value="Add product">
-      </form>
+            </form>
         </div>
     </div>
     <div id="successModalAdd" class="modalAdd">
