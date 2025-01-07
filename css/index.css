@@ -802,16 +802,24 @@ input[type="checkbox"]:checked {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding: 50px;
+  padding: 50px 0 50px 50px;
   margin-bottom: 100px;
-  width: 100%;
+  width: 60%;
 }
 
+.thebagie {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  padding: 50px;
+  width: 100%;
+  border-radius: 10px;
+}
 .allItemstoBuy {
   background-color: #f8f8f8;
   display: flex;
   flex-direction: column;
-  width: 70%;
+  /* width: 70%; */
   padding: 50px;
 }
 
@@ -835,7 +843,6 @@ input[type="checkbox"]:checked {
   margin: 25px;
   border: 1px solid black;
   border-radius: 10px;
-  padding-right: 100px;
 }
 
 .bagImgAndInfo {
@@ -851,6 +858,14 @@ input[type="checkbox"]:checked {
 
 .bagItemInfo p {
   margin: 0 0 15px 0;
+}
+
+.itemDescr {
+  max-width: 300px; /* Adjust the max-width as needed */
+  max-height: 100px; /* Adjust the max-height as needed */
+  overflow: hidden; /* Hide overflow content */
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflow text */
+  white-space: normal; /* Prevent text from wrapping to the next line */
 }
 
 .bagItemInfo h4 {
@@ -879,7 +894,7 @@ input[type="checkbox"]:checked {
 
 .totalPrice {
   margin-top: 50px;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 700;
 }
 
@@ -1041,4 +1056,8 @@ input[type="checkbox"]:checked {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.errorMessage {
+  margin-top: -30px;
 }
