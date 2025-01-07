@@ -16,8 +16,19 @@ class Products {
     protected $diameter;
     protected $width;
     protected $upload_id; 
+    protected $id;
 
-    //title
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
+   
+
     public function getTitle()
     {
         return $this->title;
@@ -141,38 +152,31 @@ class Products {
 
      public function save() {
     try {
-        // Database connection
         $conn = Db::getConnection();
-
-        // Insert product information into the database
-        $sql = "INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, width, upload_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(1, $this->title);
-        $stmt->bindParam(2, $this->description);
-        $stmt->bindParam(3, $this->amount);
-        $stmt->bindParam(4, $this->category_id);
-        $stmt->bindParam(5, $this->price);
-        $stmt->bindParam(6, $this->height);
-        $stmt->bindParam(7, $this->diameter);
-        $stmt->bindParam(8, $this->width);
-        $stmt->bindParam(9, $this->upload_id);
+        $stmt = $conn->prepare("
+            INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, width, upload_id) 
+            VALUES (:title, :description, :amount, :category_id, :price, :height, :diameter, :width, :upload_id)
+        ");
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':amount', $this->amount);
+        $stmt->bindParam(':category_id', $this->category_id);
+        $stmt->bindParam(':price', $this->price);
+        $stmt->bindParam(':height', $this->height);
+        $stmt->bindParam(':diameter', $this->diameter);
+        $stmt->bindParam(':width', $this->width);
+        $stmt->bindParam(':upload_id', $this->upload_id);
 
         if ($stmt->execute()) {
-             echo "Product added successfully.<br>";
+            $this->id = $conn->lastInsertId(); // Set the ID of the product
             return true;
         } else {
-       echo "Failed to execute SQL statement.<br>";
-            throw new Exception("Error: " . $stmt->errorInfo()[2]);
+            return false;
         }
     } catch (PDOException $e) {
-         echo "Database error: " . $e->getMessage() . "<br>";
-        throw new Exception("Database error: " . $e->getMessage());
+        throw new Exception("Failed to save product: " . $e->getMessage());
     }
 }
-   public function getId() {
-        return $this->id; // Return the product ID
-    }
-
     public function getProducts($category = '', $search = '') {
     try {
         $conn = Db::getConnection();
@@ -208,6 +212,50 @@ class Products {
 
     } catch (PDOException $e) {
         throw new Exception("Error fetching products: " . $e->getMessage());
+    }
+}
+
+    //public function getProductsbyId()
+    public function getProductById($product_id) {
+    try {
+        $conn = Db::getConnection();
+        $sql = "
+            SELECT * 
+            FROM products 
+            WHERE id = :product_id
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT); // Fix here
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching product: " . $e->getMessage());
+    }
+}
+
+public function update() {
+    try {
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("
+            UPDATE products 
+            SET title = :title, description = :description, stockAmount = :amount, category_id = :category_id, price = :price, height = :height, diameter = :diameter, width = :width 
+            WHERE id = :id
+        ");
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':amount', $this->amount);
+        $stmt->bindParam(':category_id', $this->category_id);
+        $stmt->bindParam(':price', $this->price);
+        $stmt->bindParam(':height', $this->height);
+        $stmt->bindParam(':diameter', $this->diameter);
+        $stmt->bindParam(':width', $this->width);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Error updating product: " . $e->getMessage();
+        return false;
     }
 }
 

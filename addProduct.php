@@ -112,38 +112,33 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add new HouseOfMooseproduct</title>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-  if (window.productAdded) {
-    // Show success modal
-    const successModal = document.getElementById("successModalAdd");
-    successModal.style.display = "flex";
+       document.addEventListener("DOMContentLoaded", function () {
+    if (window.productAdded) {
+        const successModal = document.getElementById("successModalAdd");
 
-    // Button actions
-    document
-      .getElementById("seeProductBtnAdd")
-      .addEventListener("click", function () {
-        // Redirect to the product page with the product ID
-        window.location.href = `productPage.php?id=${window.productId}`;
-      });
+        // Show the modal
+        successModal.style.display = "flex";
 
-    document
-      .getElementById("addAnotherBtnAdd")
-      .addEventListener("click", function () {
-        // Reload the page for adding another product
-        window.location.reload();
-       if (event.target === successModal) {
-        successModal.style.display = "none";
-      }
-      });
+        // Redirect to product page
+        document.getElementById("seeProductBtnAdd").addEventListener("click", function () {
+            window.location.href = `productPageAdded.php?id=${window.productId}`;
+        });
 
-    // Close modal when clicking outside of it
-    window.addEventListener("click", function (event) {
-      if (event.target === successModal) {
-        successModal.style.display = "none";
-      }
-    });
-  }
+        // Add another product
+        document.getElementById("addAnotherBtnAdd").addEventListener("click", function () {
+            successModal.style.display = "none"; // Hide modal            
+            window.location.href = `addProduct.php`;
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener("click", function (event) {
+            if (event.target === successModal) {
+                successModal.style.display = "none";
+            }
+        });
+    }
 });
+
 
     </script>
 </head>
