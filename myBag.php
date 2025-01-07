@@ -1,12 +1,25 @@
 <?php
 session_start();
 
+
 ini_set('display_errors', 1);  // Display errors in the browser
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);  // Report all types of errors
 
 require_once __DIR__ . '/classes/Cart.php';
 
+$userId = $_SESSION['user_id'] ?? null;
+
+if (!$userId) {
+    die("You must be logged in to view your cart.");
+}
+
+$cart = new Cart();
+$cartItems = $cart->getCartItems($userId);
+$cartItems = $cart->getCartItems($userId);
+
+
+$totalPrice = $cart->getTotalPrice($userId);
 
 
 ?><!DOCTYPE html>
@@ -24,38 +37,30 @@ require_once __DIR__ . '/classes/Cart.php';
     <div class="checkOut">
         <div class="allItemstoBuy">
             <h3 class="bagTitle">My Bag</h3>
-
-            <?php if (!empty($cart_items)): ?>
-                <?php foreach ($cart_items as $product_id => $item): ?>
-                    <?php
-                    $product = $cart->getProductDetails($product_id);
-                    if ($product === null) {
-                        echo "Product not found.";
-                        continue;
-                    }
-                    ?>
-
-                    <div class="itemToBuy">
-                        <div class="bagImgAndInfo">
-                            <img src="uploads/<?php echo $product['image']; ?>" alt="" class="itemPic">
-                            <div class="bagItemInfo">
-                                <h4 class="itemTitle"><?php echo $product['name']; ?></h4>
-                                <p class="itemDescr"><?php echo $product['description']; ?></p>
-                                <p class="itemAmount">x<?php echo $item['quantity']; ?></p>
-                            </div>
-                        </div>
-                        <div class="bagItemPrice">
-                            <p class="itemPrice"><?php echo $product['price']; ?> Euro</p>
+            <?php if (!empty($cartItems)): ?>
+            <?php foreach ($cartItems as $item): ?>
+                <div class="itemToBuy">
+                    <div class="bagImgAndInfo">
+                    <img src="uploads/<?php echo htmlspecialchars($item['fileName']); ?>" alt="" class="itemPic">
+                        <div class="bagItemInfo">
+                            <h4 class="itemTitle"><?php echo htmlspecialchars($item['title']); ?></h4>
+                            <p class="itemDescr"><?php echo htmlspecialchars($item['description']); ?></p>
+                            <p class="itemAmount">x<?php echo (int) $item['quantity']; ?></p>
                         </div>
                     </div>
+                    <div class="bagItemPrice">
+                        <p class="itemPrice"><?php echo number_format($item['price'], 2); ?> Euro</p>
+                    </div>
+                </div>
                 <?php endforeach; ?>
                 <div class="totalPrice">
                     <p class="total">Total:</p>
-                    <p class="totalAmount"><?php echo $cart->getTotalPrice(); ?> Euro</p>
+                    <p class="totalAmount"><?php echo number_format($totalPrice, 2); ?> Euro</p>
                 </div>
-            <?php else: ?>
-                <p>Your cart is empty.</p>
-            <?php endif; ?>
+                <?php else: ?>
+                    <p>Your cart is empty.</p>
+                <?php endif; ?>
+
         </div>
     </div>
 

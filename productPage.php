@@ -167,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <?php if (!empty($reviews)): ?>
                         <?php foreach ($reviews as $review): ?>
                             <div class="review">
-                                <p class="userRev">User ID: <?php echo htmlspecialchars($review['user_id']); ?></p>
+                                <p class="userRev">User<?php echo htmlspecialchars($review['user_id']); ?></p>
                                 <p class="ratingRev">Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
-                                <p class="commentRev">Comment: <?php echo htmlspecialchars($review['comment']); ?></p>
+                                <p class="commentRev"><?php echo htmlspecialchars($review['comment']); ?></p>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
