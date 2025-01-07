@@ -76,14 +76,18 @@ class Users{
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($password, $user['password'])) {
+            session_start(); // Ensure session is started
+            $_SESSION['user_email'] = $user['email']; // Store user's email in session
+            $_SESSION['user_id'] = $user['id'];      // Optional: Store user's ID
             return [
-                'user_id' => $user['id'],    // Return the user ID
-                'isAdmin' => $user['isAdmin'] // Return the isAdmin value
+                'user_id' => $user['id'],
+                'isAdmin' => $user['isAdmin']
             ];
         } else {
             error_log("Login failed for user: $email");
             return false;
         }
+
     } catch (PDOException $e) {
         error_log("Database error: " . $e->getMessage());
         return false;
@@ -133,11 +137,32 @@ private function sanitize($data) {
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
+public static function getCurrencyAmount($email) {
+    try {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT currency FROM users WHERE email = :email");
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return htmlspecialchars($result['currency'], ENT_QUOTES, 'UTF-8');
+        } else {
+            throw new Exception("User not found");
+        }
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+        return null;
+    }
+}
+
 public static function getCurrentUser($email) {
     $conn = Db::getConnection();
     $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
     $statement->bindValue(':email', $email);
     $statement->execute();
+    
+    // Return user data or false if not found
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -150,24 +175,37 @@ public static function getCurrentUser($email) {
 
         $conn = Db::getConnection();
 
-        $statement = $conn->prepare("SELECT password FROM users WHERE email = :email");
-        $statement->bindValue(':email', $this->email);
-        $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if (password_verify($oldPassword, $user['password'])) {
-            $options = [
-                'cost' => 13,
-            ];
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT, $options);
-            $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
-            $statement->bindValue(':password', $hashedPassword);
-            $statement->bindValue(':email', $this->email);
+        try {
+            $conn->beginTransaction();
+            $statement = $conn->prepare('SELECT PASSWORD FROM users WHERE email = :email');
+            $statement->bindParam(':email', $this->email);
             $statement->execute();
-            return true;
-        } else {
-           throw new Exception('Old password is incorrect');
+            $user = $statement->fetch();
+    
+            if ($user && isset($user['PASSWORD']) && !is_null($user['PASSWORD'])) {
+                if (password_verify($oldPassword, $user['PASSWORD'])) {
+                    $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT, ['cost' => 12]);
+    
+                    $updateStatement = $conn->prepare('UPDATE users SET PASSWORD = :password WHERE email = :email');
+                    $updateStatement->bindParam(':password', $newPasswordHash);
+                    $updateStatement->bindParam(':email', $this->email);
+    
+                    // Gebruik een transactie
+                    $updateStatement->execute();
+                    $conn->commit();
+    
+                    return true;
+                } else {
+                    throw new Exception('Onjuist huidig passwoord');
                     $result['div'] = 'current_password';
-        } 
+                }
+            } else {
+                throw new Exception('User not found');
+            }
+        } catch (Exception $e) {
+            $conn->rollBack(); 
+            throw $e;
+        }
+       
     } 
 }

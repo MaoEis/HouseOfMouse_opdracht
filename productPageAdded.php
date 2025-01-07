@@ -83,6 +83,21 @@ if ($productId > 0) {
     die("No valid product ID specified.");
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['id'])) {
+    $productId = $_POST['id'];
+
+    // Delete query
+    $sql = "DELETE FROM products WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+if ($stmt->execute()) {
+    echo 'success';
+    exit();
+} else {
+    echo 'error';
+    exit();
+}
+}
 $user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
@@ -92,8 +107,84 @@ $user_id = $_SESSION['user_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css">
     <title><?php echo htmlspecialchars($product['title']); ?></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <script>
+$(document).ready(function() {
+    function showCustomModal(message) {
+        $('#modalMessage').text(message);
+        $('#customModal').fadeIn();
+
+        // Close modal when clicking the close button
+        $('#closeModal').click(function() {
+            $('#customModal').fadeOut();
+        });
+
+        // Close modal when clicking outside the modal content
+        $(window).click(function(event) {
+            if ($(event.target).is('#customModal')) {
+                $('#customModal').fadeOut();
+            }
+        });
+    }
+
+    let productIdToDelete = null;
+
+    function showConfirmModal(callback) {
+        $('#confirmModal').fadeIn();
+
+        // Handle Yes button
+        $('#confirmYes').off().click(function() {
+            $('#confirmModal').fadeOut();
+            if (callback) callback(true);
+        });
+
+        // Handle No button
+        $('#confirmNo').off().click(function() {
+            $('#confirmModal').fadeOut();
+            if (callback) callback(false);
+        });
+
+        // Close modal when clicking outside the modal content
+        $(window).click(function(event) {
+            if ($(event.target).is('#confirmModal')) {
+                $('#confirmModal').fadeOut();
+                if (callback) callback(false);
+            }
+        });
+    }
+
+    $('.adminDel').click(function() {
+        productIdToDelete = $(this).data('product-id');
+        console.log("Delete button clicked, product ID:", productIdToDelete);
+
+        showConfirmModal(function(isConfirmed) {
+            if (isConfirmed) {
+                $.ajax({
+                    url: 'adminIndex.php',
+                    type: 'POST',
+                    data: { id: productIdToDelete, action: 'delete' },
+                    success: function(response) {
+                        console.log("AJAX request successful, response:", response);
+                        if (response.trim() === 'success') {
+                            showCustomModal('Product deleted successfully.');
+                            $('[data-product-id="' + productIdToDelete + '"]').closest('.collectionItem').remove();
+                        } else {
+                            showCustomModal('Failed to delete the product. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX request failed:", xhr.responseText, status, error);
+                        showCustomModal('An error occurred. Please try again later.');
+                    }
+                });
+            } else {
+                console.log("User canceled the deletion.");
+            }
+        });
+    });
+});
     </script>
     <?php include_once("navAdmin.inc.php"); ?>
     <div class="indivCollectPage">
@@ -105,9 +196,11 @@ $user_id = $_SESSION['user_id'];
             <p class="indivProdDescr"><?php echo htmlspecialchars($product['description']); ?></p>
 
             <div class="adminIndexBtns" id="adminBtns">
-                <button class="indexAddBtnAdmin adminEdit" > EDIT </button>
-                <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
-            </div>
+            <button class="indexAddBtnAdmin adminEdit">
+              <a class="indexAddBtnAdmin"  href="myAdmin.php?id=<?php echo $c['id']; ?>">EDIT</a>
+            </button>
+            <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
+        </div>
 
               <div class="ColMatSection">
                 <h3 class="indivProdMat">COLOURS:</h3>
@@ -159,6 +252,20 @@ $user_id = $_SESSION['user_id'];
             </div>
         </div>
     </div>
-
+<div id="confirmModal" class="modal">
+  <div class="modalContent">
+    <p id="confirmMessage">Are you sure you want to delete this product?</p>
+    <div class="modalButtons">
+      <button id="confirmYes" class="confirmBtn">Yes</button>
+      <button id="confirmNo" class="confirmBtn">No</button>
+    </div>
+  </div>
+</div>
+<div id="customModal" class="modal">
+  <div class="modalContent">
+    <span id="closeModal" class="closeBtn">&times;</span>
+    <p id="modalMessage"></p>
+  </div>
+</div>
 </body>
 </html>

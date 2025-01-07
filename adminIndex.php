@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -17,13 +18,12 @@ include_once(__DIR__ . "/classes/Upload.php");
 
 
 $db = Db::getConnection();
-$query = $db->prepare("
-    SELECT products.*, uploads.fileName 
-    FROM products, uploads 
-    WHERE products.upload_id = uploads.id
-");
-$query->execute();
-$collection = $query->fetchAll(PDO::FETCH_ASSOC);
+ $products = new Products();
+$category = isset($_GET['category']) ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8') : '';
+
+// Search functionality
+$search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : '';
+$collection = $products->getProducts($category, $search);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['id'])) {
     $productId = $_POST['id'];
@@ -136,28 +136,32 @@ $(document).ready(function() {
       <h3 class="slogan" > A reason to be hom'. </h3>
     </div>
   <div class="catBtn"> 
-    <a href="#">All</a>
-    <a href="#">Mug</a>
-    <a href="#">Soap dispenser</a>
-    <a href="#">Oil dispenser</a>
-    <a href="#">Plate</a>
+    <a href="?category=">All</a>
+    <a href="?category=1">Mug</a>
+    <a href="?category=2">Soap Dispenser</a>
+    <a href="?category=4">Oil Dispenser</a>
+    <a href="?category=3">Plate</a>
   </div>
    <form action="" method="get">
-        <input type="text" name="search">
-        <input type="submit" value="Search">
-      </form>
+            <input type="text" name="search" value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="submit" value="Search">
+        </form>
   </div>
 
   <div class="collection">
   <?php foreach($collection as $key => $c): ?>
     <div class="collectionItem">
-       <a href="productPage.php?id=<?php echo $c['id']; ?>">
-            <img src="/HouseOfMoose_opdracht/uploads/<?php echo $c['fileName']; ?>" alt="<?php echo $c['title']; ?>" class="collectionImage">
-        </a>
-        <a class="collectionTitle" href="productPage.php?id=<?php echo  $c['id']; ?>"><?php echo $c['title']; ?></a>
+       <a href="productPageAdded.php?id=<?php echo $c['id']; ?>">
+                    <img src="/HouseOfMoose_opdracht/uploads/<?php echo htmlspecialchars($c['fileName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>" class="collectionImage">
+                </a>
+                <a class="collectionTitle" href="productPageAdded.php?id=<?php echo $c['id']; ?>">
+                    <?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>
+                </a>
         <div class="adminIndexBtns" id="adminBtns">
-          <button class="indexAddBtnAdmin adminEdit" > EDIT </button>
-          <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
+            <button class="indexAddBtnAdmin adminEdit">
+              <a class="indexAddBtnAdmin"  href="myAdmin.php?id=<?php echo $c['id']; ?>">EDIT</a>
+            </button>
+            <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
         </div>
     </div>
   <?php endforeach; ?>

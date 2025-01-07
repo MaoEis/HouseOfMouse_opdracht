@@ -14,15 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const newPassword = document.getElementById("new_password").value;
     const confirmPassword = document.getElementById("confirm_password").value;
 
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
-
-    if (!passwordRegex.test(newPassword)) {
-      error.textContent =
-        "Password must contain at least 8 characters, a number, an uppercase letter, and a symbol.";
-      error.style.display = "block";
-      return;
-    }
-
     if (newPassword !== confirmPassword) {
       error.textContent = "Passwords do not match.";
       error.style.display = "block";
@@ -31,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData(passwordForm);
 
-    fetch("../assets/change_pw.php", {
+    fetch("HouseOfMoose_opdracht/assets/change_pw.php", {
       method: "POST",
       body: formData,
     })

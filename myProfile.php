@@ -1,4 +1,29 @@
-<!DOCTYPE html>
+<?php
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_email'])) {
+    header('Location: login.php'); // Redirect to login if not logged in
+    exit();
+}
+
+include_once(__DIR__ ."/classes/Users.php");
+$userEmail = $_SESSION['user_email'];
+$user = Users::getCurrentUser($userEmail); // Assuming getCurrentUser returns user data
+
+// Check if user data was fetched successfully
+if (!$user) {
+    die("User not found.");
+}
+
+
+// Fetch user details
+$userEmail = $_SESSION['user_email'];
+$userCurrency = Users::getCurrencyAmount($userEmail);
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +37,9 @@
     <div class="profile">
         <h3 class="profileTitle">My Profile</h3>
         <div class="myCurrencyAmount">
-                <h4 class="currencyTitle">My currency amount:</h4>
+            <h4 class="currencyTitle">My currency amount: € <?php echo $userCurrency ?: 'N/A'; ?></h4>
         </div>
+
         <div class="myprofile">
             <div class="profileInfo">
             <h3 class="profTitle">Personal Information</h3>

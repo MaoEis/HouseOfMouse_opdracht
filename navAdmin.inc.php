@@ -6,7 +6,7 @@
     <div class="btnNav">
       <a class="btnsNav" href="adminIndex.php">Shop</a>
       <a class="btnsNav" href="ourTeamAdmin.php">Our team</a>
-      <a class="btnsNav" href="myAdmin.php">My admin</a>
+      <a class="btnsNav" href="myDash.php">My admin</a>
       <a class="btnsNav" href="addProduct.php">Add product</a>
     </div>
     

@@ -234,6 +234,61 @@ class Products {
     }
 }
 
+public function getProductWithFileName($product_id)
+{
+    try {
+        $conn = Db::getConnection();
+        $sql = "
+            SELECT p.*, u.fileName
+            FROM products p
+            LEFT JOIN uploads u ON p.upload_id = u.id  -- Join on upload_id from products to id in uploads
+            WHERE p.id = :product_id
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching product with file name: " . $e->getMessage());
+    }
+}
+
+public function getCategories() {
+    try {
+        $conn = Db::getConnection();
+        $sql = "SELECT id, name FROM category"; // Assuming your categories table has 'id' and 'name'
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching categories: " . $e->getMessage());
+    }
+}
+
+
+public function getColors() {
+    try {
+        $conn = Db::getConnection();
+        $sql = "SELECT id, name FROM colors"; // Assuming your colors table has 'id' and 'name'
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching colors: " . $e->getMessage());
+    }
+}
+
+public function getMaterials() {
+    try {
+        $conn = Db::getConnection();
+        $sql = "SELECT id, name FROM materials"; // Assuming your materials table has 'id' and 'name'
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching materials: " . $e->getMessage());
+    }
+}
 public function update() {
     try {
         $conn = Db::getConnection();
