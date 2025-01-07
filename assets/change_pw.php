@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include_once('../classes/Users.php');
+include_once('/../classes/Users.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ensure the user is logged in

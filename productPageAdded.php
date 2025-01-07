@@ -202,12 +202,11 @@ $(document).ready(function() {
             <button class="indexAddBtnAdmin adminDel" data-product-id="<?php echo $c['id']; ?>"> DELETE </button>
         </div>
 
-              <div class="ColMatSection">
-                <h3 class="indivProdMat">COLOURS:</h3>
-                <h3 class="indivProdMat">METAL MATERIAL:</h3>
-                <!-- <p class="indivProdMat"><?php echo htmlspecialchars($product['materials']); ?></p> -->
-
-            </div>
+              <!-- <div class="ColMatSection">
+                 <h3 class="indivProdMat">COLOURS:</h3>
+                <h3 class="indivProdMat">METAL MATERIAL:</h3> -->
+                <!-- <p class="indivProdMat"><?php echo htmlspecialchars($product['materials']); ?></p>
+            </div> -->
           
              
             <div class="indivColDim">
@@ -225,16 +224,16 @@ $(document).ready(function() {
                     <?php if (!empty($reviews)): ?>
     <?php foreach ($reviews as $review): ?>
         <div class="review">
-            <p>User: <?php echo htmlspecialchars($review['user_id']); ?></p>
-            <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
-            <p>Comment: <?php echo htmlspecialchars($review['comment']); ?></p>
+            <p class="userRev" >User: <?php echo htmlspecialchars($review['user_id']); ?></p>
+            <p class="ratingRev" >Rating: <?php echo htmlspecialchars($review['rating']); ?> x ⭐️ </p>
+            <p class="commentRev"  ><?php echo htmlspecialchars($review['comment']); ?></p>
         </div>
     <?php endforeach; ?>
 <?php else: ?>
     <p>No reviews yet.</p>
 <?php endif; ?>
 
-                <h3>ADD REVIEW:</h3>
+                <!-- <h3>ADD REVIEW:</h3>
                 
                 <form class="reviewForm" action="#" method="POST">
                     <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
@@ -248,7 +247,7 @@ $(document).ready(function() {
                     </div>
                     <textarea name="comment" id="comment" required></textarea>
                     <button class="revBtn" type="submit">Submit</button>
-                </form>
+                </form> -->
             </div>
         </div>
     </div>
