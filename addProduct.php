@@ -1,10 +1,10 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
-include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/classes/Products.php");
-include_once(__DIR__ . "/classes/Upload.php");
+// include_once(__DIR__ . "/classes/Db.php");
+// include_once(__DIR__ . "/classes/Products.php");
+// include_once(__DIR__ . "/classes/Upload.php");
 
 // $uploadsDir = __DIR__ . '/uploads/';
 // if (!is_dir($uploadsDir)) {
@@ -14,23 +14,143 @@ include_once(__DIR__ . "/classes/Upload.php");
 //     echo "Uploads directory already exists.<br>";
 // }
 
-try {
-    // Fetch categories from the database
-    $conn = Db::getConnection();
+// try {
+//     // Fetch categories from the database
+//     $conn = Db::getConnection();
     
-    // Fetch categories
+//     // Fetch categories
+//     $sql = "SELECT id, name FROM category";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->execute();
+//     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+//     // Fetch colors
+//     $sql = "SELECT id, name FROM colors";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->execute();
+//     $colors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+//     // Fetch materials
+//     $sql = "SELECT id, name FROM materials";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->execute();
+//     $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// } catch (PDOException $e) {
+//     echo "Error fetching data: " . $e->getMessage();
+//     $categories = [];
+//     $colors = [];
+//     $materials = [];
+// }
+
+// if (isset($_POST['submit'])) {
+//     echo "Form submitted.<br>";
+//     try {
+//         // Handle file upload
+//         $file = $_FILES['file'];
+//         $fileName = $_FILES['file']['name'];
+//         $fileTmpName = $_FILES['file']['tmp_name'];
+//         $fileSize = $_FILES['file']['size'];
+//         $fileError = $_FILES['file']['error'];
+//         $fileType = $_FILES['file']['type'];
+
+//         $fileExt = explode('.', $fileName);
+//         $fileActualExt = strtolower(end($fileExt));
+
+//         $allowed = array('jpg', 'jpeg', 'png');
+
+//         if (in_array($fileActualExt, $allowed)) {
+//             if ($fileError === 0) {
+//                 if ($fileSize < 1000000000) {
+//                     $fileNameNew = uniqid('', true).".".$fileActualExt;
+//                     $fileDestination = 'uploads/'.$fileNameNew;
+//                     if (move_uploaded_file($fileTmpName, $fileDestination)) {
+//                         echo "File uploaded successfully.<br>";
+
+//                         $upload = new Upload();
+//                         $upload->setFileName($fileNameNew)
+//                                ->setFilePath($fileDestination)
+//                                ->setFileSize($fileSize)
+//                                ->setFileType($fileType);
+
+//                         // Save the upload information to the database
+//                         $uploadId = $upload->save();
+//                         echo "Upload saved with ID: $uploadId<br>";
+
+//                         // Create a new product instance
+//                         $product = new Products();
+//                         $product->setTitle($_POST['title'])
+//                                 ->setDescription($_POST['description'])
+//                                 ->setAmount($_POST['amount'])
+//                                 ->setCategoryId($_POST['category_id'])
+//                                 ->setPrice($_POST['price'])
+//                                 ->setHeight($_POST['height'])
+//                                 ->setDiameter($_POST['diameter'])
+//                                 ->setUploadId($uploadId);  // Save the file path as picture
+
+//                         // Save the product to the database
+//                         if ($product->save()) {
+//     echo "<script>window.productAdded = true;</script>";
+//     echo "<script>window.productId = {$product->getId()};</script>";
+// } else {
+//     echo "Failed to add product.";
+// }
+//                     } else {
+//                         echo "Failed to move uploaded file.";
+//                     }
+//                 } else {
+//                     echo "Your file is too big!";
+//                 }
+//             } else {
+//                 echo "There was an error uploading your file!";
+//             }
+//         } else {
+//             echo "You cannot upload files of this type!";
+//         }
+//     } catch (Exception $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+
+
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/classes/Products.php");
+include_once(__DIR__ . "/classes/Upload.php");
+
+$uploadsDir = __DIR__ . '/uploads/';
+// Controleer of de uploads-map bestaat en maak deze indien nodig aan
+if (!is_dir($uploadsDir)) {
+    if (mkdir($uploadsDir, 0775, true)) {
+        echo "Uploads directory created.<br>";
+    } else {
+        die("Failed to create uploads directory. Check permissions.");
+    }
+} else {
+    echo "Uploads directory already exists.<br>";
+}
+
+try {
+    // Haal categorieën, kleuren en materialen op uit de database
+    $conn = Db::getConnection();
+
+    // Haal categorieën op
     $sql = "SELECT id, name FROM category";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch colors
+    // Haal kleuren op
     $sql = "SELECT id, name FROM colors";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $colors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch materials
+    // Haal materialen op
     $sql = "SELECT id, name FROM materials";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -45,73 +165,79 @@ try {
 
 if (isset($_POST['submit'])) {
     echo "Form submitted.<br>";
+
     try {
-        // Handle file upload
+        // Verwerk bestand upload
         $file = $_FILES['file'];
-        $fileName = $_FILES['file']['name'];
-        $fileTmpName = $_FILES['file']['tmp_name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileError = $_FILES['file']['error'];
-        $fileType = $_FILES['file']['type'];
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+        $fileType = $file['type'];
 
         $fileExt = explode('.', $fileName);
         $fileActualExt = strtolower(end($fileExt));
 
-        $allowed = array('jpg', 'jpeg', 'png');
+        $allowed = ['jpg', 'jpeg', 'png'];
 
         if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {
                 if ($fileSize < 1000000000) {
-                    $fileNameNew = uniqid('', true).".".$fileActualExt;
-                    $fileDestination = 'uploads/';
-                    if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                        echo "File uploaded successfully.<br>";
+                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                    $fileDestination = $uploadsDir . $fileNameNew;
 
-                        $upload = new Upload();
-                        $upload->setFileName($fileNameNew)
-                               ->setFilePath($fileDestination)
-                               ->setFileSize($fileSize)
-                               ->setFileType($fileType);
+                    // Controleer of de uploads-map schrijfbaar is
+                    if (is_writable($uploadsDir)) {
+                        if (move_uploaded_file($fileTmpName, $fileDestination)) {
+                            echo "File uploaded successfully.<br>";
 
-                        // Save the upload information to the database
-                        $uploadId = $upload->save();
-                        echo "Upload saved with ID: $uploadId<br>";
+                            $upload = new Upload();
+                            $upload->setFileName($fileNameNew)
+                                ->setFilePath($fileDestination)
+                                ->setFileSize($fileSize)
+                                ->setFileType($fileType);
 
-                        // Create a new product instance
-                        $product = new Products();
-                        $product->setTitle($_POST['title'])
+                            // Sla de uploadgegevens op in de database
+                            $uploadId = $upload->save();
+                            echo "Upload saved with ID: $uploadId<br>";
+
+                            // Maak een nieuw product aan
+                            $product = new Products();
+                            $product->setTitle($_POST['title'])
                                 ->setDescription($_POST['description'])
                                 ->setAmount($_POST['amount'])
                                 ->setCategoryId($_POST['category_id'])
                                 ->setPrice($_POST['price'])
                                 ->setHeight($_POST['height'])
                                 ->setDiameter($_POST['diameter'])
-                                ->setUploadId($uploadId);  // Save the file path as picture
+                                ->setUploadId($uploadId);
 
-                        // Save the product to the database
-                        if ($product->save()) {
-    echo "<script>window.productAdded = true;</script>";
-    echo "<script>window.productId = {$product->getId()};</script>";
-} else {
-    echo "Failed to add product.";
-}
+                            // Sla het product op in de database
+                            if ($product->save()) {
+                                echo "<script>window.productAdded = true;</script>";
+                                echo "<script>window.productId = {$product->getId()};</script>";
+                            } else {
+                                echo "Failed to add product.";
+                            }
+                        } else {
+                            echo "Failed to move uploaded file. Check directory permissions.";
+                        }
                     } else {
-                        echo "Failed to move uploaded file.";
+                        echo "Uploads directory is not writable. Check permissions.";
                     }
                 } else {
                     echo "Your file is too big!";
                 }
             } else {
-                echo "There was an error uploading your file!";
+                echo "There was an error uploading your file! Error code: $fileError";
             }
         } else {
             echo "You cannot upload files of this type!";
         }
     } catch (Exception $e) {
-        echo $e->getMessage();
+        echo "Error: " . $e->getMessage();
     }
 }
-
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
