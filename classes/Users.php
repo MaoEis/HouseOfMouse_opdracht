@@ -79,7 +79,9 @@ class Users {
 
 public function canLogin($email, $password) {
     $conn = Db::getConnection();
-    $statement = $conn->prepare("SELECT id, password, isAdmin FROM users WHERE email = :email");
+    $statement = $conn->prepare(
+        "SELECT id, password, isAdmin FROM users WHERE email = :email"
+    );
     $statement->bindValue(':email', $email);
     $statement->execute();
 
@@ -90,7 +92,6 @@ public function canLogin($email, $password) {
             'isAdmin' => $user['isAdmin'],
         ];
     }
-
     return false;
 }
 
