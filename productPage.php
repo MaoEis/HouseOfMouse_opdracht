@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php include_once("nav.inc.php"); ?>
     <div class="indivCollectPage">
         <div class="indivColImage">
-            <img src="/HouseOfMoose_opdracht/uploads/<?php echo htmlspecialchars($productDetails['fileName']); ?>" alt="<?php echo htmlspecialchars($productDetails['title']); ?>" class="collectionImage" id="indivColImage">
+            <img src="uploads/<?php echo htmlspecialchars($productDetails['fileName']); ?>" alt="<?php echo htmlspecialchars($productDetails['title']); ?>" class="collectionImage" id="indivColImage">
         </div>
         <div class="indivCollectInfo">
             <h1 class="indivProdTitle"><?php echo htmlspecialchars($productDetails['title']); ?></h1>

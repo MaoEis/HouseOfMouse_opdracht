@@ -189,7 +189,7 @@ $(document).ready(function() {
     <?php include_once("navAdmin.inc.php"); ?>
     <div class="indivCollectPage">
         <div class="indivColImage">
-            <img src="/HouseOfMoose_opdracht/uploads/<?php echo htmlspecialchars($product['fileName']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="collectionImage" id="indivColImage">
+            <img src="uploads/<?php echo htmlspecialchars($product['fileName']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="collectionImage" id="indivColImage">
         </div>
         <div class="indivCollectInfo">
             <h1 class="indivProdTitle"><?php echo htmlspecialchars($product['title']); ?></h1>

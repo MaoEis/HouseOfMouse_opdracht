@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
   <?php foreach($collection as $key => $c): ?>
     <div class="collectionItem">
        <a href="productPageAdded.php?id=<?php echo $c['id']; ?>">
-                    <img src="/HouseOfMoose_opdracht/uploads/<?php echo htmlspecialchars($c['fileName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>" class="collectionImage">
+                    <img src="uploads/<?php echo htmlspecialchars($c['fileName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>" class="collectionImage">
                 </a>
                 <a class="collectionTitle" href="productPageAdded.php?id=<?php echo $c['id']; ?>">
                     <?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>

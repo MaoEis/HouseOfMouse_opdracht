@@ -26,7 +26,7 @@ $teamMember = $query->fetchAll(PDO::FETCH_ASSOC);
     <div class="theTeam">
         <?php foreach($teamMember as $key => $t): ?>
         <div class="teamMember">
-            <img src="/HouseOfMoose_opdracht/uploads/<?php echo $t['image']; ?>" alt="img" class="memPic">
+            <img src="uploads/<?php echo $t['image']; ?>" alt="img" class="memPic">
             <h4 class="memberTitle"><?php echo $t['name']; ?></h4>
             <p class="memberDescr" ><?php echo $t['description'];?></p>
               <div class="adminIndexBtns" id="adminBtns">
