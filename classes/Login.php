@@ -46,7 +46,7 @@ class LoginHandler {
             }
         } catch (Throwable $th) {
              error_log("Error in handleLogin: " . $th->getMessage());
-            return "Something went wrong. Please try again later.";
+            return "Something went wrong. Please try again later.". $th->getMessage();
         }
     }
 }
