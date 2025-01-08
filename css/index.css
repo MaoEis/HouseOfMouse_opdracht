@@ -417,7 +417,17 @@ input[type="checkbox"]:checked {
   cursor: pointer;
   font-weight: 700;
 }
-
+#passwordform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#passwordform input {
+  padding: 5px 10px;
+  width: 50%;
+  border: 1px solid black;
+  border-radius: 3px;
+}
 #goToBag:hover {
   color: #f5b301;
   border: 2px solid #f5b301;

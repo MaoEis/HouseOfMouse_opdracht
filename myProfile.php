@@ -66,9 +66,9 @@ $userCurrency = Users::getCurrencyAmount($userEmail);
             <div class="myOrders">
                 <h3 class="myOrdersTitle">My orders</h3>
                 <div class="order">
-                    <h4 class="orderTitle">Order ID: 1</h4>
-                    <p class="orderDate">Date: 2021-03-01</p>
-                    <p class="orderAmount">Amount: 17 Euro</p>
+                    <h4 class="orderTitle">No previous orders</h4>
+                    <!-- <p class="orderDate">Date: 2021-03-01</p>
+                    <p class="orderAmount">Amount: 17 Euro</p> -->
                 </div>
             </div>
         </div>
