@@ -103,10 +103,6 @@ if (!$productDetails) {
                     <label for="diameter">Diameter:</label>
                     <input type="number" name="diameter" id="diameter" value="<?php echo htmlspecialchars($productDetails['diameter'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required min="0">
                 </div>
-                <div>
-                    <label for="width">Width:</label>
-                    <input type="number" name="width" id="width" value="<?php echo htmlspecialchars($productDetails['width'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required min="0">
-                </div>
                 <input type="submit" name="submit" value="Save changes">
             </div>
         </form>

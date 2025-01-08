@@ -78,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h3 class="indivProdDimens">DIMENSIONS:</h3>
                 <div class="indivColind">
                     <p class="indivProdHeight">Height: <?php echo htmlspecialchars($productDetails['height']); ?> cm</p>
-                    <p class="indivProdwidth">Width: <?php echo htmlspecialchars($productDetails['width']); ?> cm</p>
                     <p class="indivProdDiam">Diameter: <?php echo htmlspecialchars($productDetails['diameter']); ?> cm</p>
                 </div>
             </div>

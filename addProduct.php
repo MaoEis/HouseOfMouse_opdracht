@@ -204,10 +204,6 @@ if (isset($_POST['submit'])) {
                         <label for="diameter">Diameter:</label>
                         <input type="number" name="diameter" id="diameter" required min="0">
                     </div>
-                    <div>
-                        <label for="width">Width:</label>
-                        <input type="number" name="width" id="width" required min="0">
-                    </div>
                     <input type="submit" name="submit" value="Add product">
                 </div>
             </form>

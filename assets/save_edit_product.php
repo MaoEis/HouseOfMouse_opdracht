@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $product->setPrice((float)$_POST['price']);
         $product->setHeight((float)$_POST['height']);
         $product->setDiameter((float)$_POST['diameter']);
-        $product->setWidth((float)$_POST['width']);
         
         // File upload handling
         if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {

@@ -14,7 +14,6 @@ class Products {
     protected $price;
     protected $height;
     protected $diameter;
-    protected $width;
     protected $upload_id; 
     protected $id;
     private $db;
@@ -132,17 +131,8 @@ class Products {
     }
 
        
-    public function getWidth()
-    {
-        return $this->width;
-    }
 
-    public function setWidth($width)
-    {
-        $this->width = $width;
-
-        return $this;
-    }
+    
 
     public function getUpload_id()
     {
@@ -158,8 +148,8 @@ class Products {
     try {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("
-            INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, width, upload_id) 
-            VALUES (:title, :description, :amount, :category_id, :price, :height, :diameter, :width, :upload_id)
+            INSERT INTO products (title, description, stockAmount, category_id, price, height, diameter, upload_id) 
+            VALUES (:title, :description, :amount, :category_id, :price, :height, :diameter, :upload_id)
         ");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
@@ -168,7 +158,6 @@ class Products {
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':height', $this->height);
         $stmt->bindParam(':diameter', $this->diameter);
-        $stmt->bindParam(':width', $this->width);
         $stmt->bindParam(':upload_id', $this->upload_id);
 
         if ($stmt->execute()) {
@@ -298,7 +287,7 @@ public function update() {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("
             UPDATE products 
-            SET title = :title, description = :description, stockAmount = :amount, category_id = :category_id, price = :price, height = :height, diameter = :diameter, width = :width 
+            SET title = :title, description = :description, stockAmount = :amount, category_id = :category_id, price = :price, height = :height, diameter = :diameter
             WHERE id = :id
         ");
         $stmt->bindParam(':id', $this->id);
@@ -309,7 +298,7 @@ public function update() {
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':height', $this->height);
         $stmt->bindParam(':diameter', $this->diameter);
-        $stmt->bindParam(':width', $this->width);
+
 
         return $stmt->execute();
     } catch (PDOException $e) {
