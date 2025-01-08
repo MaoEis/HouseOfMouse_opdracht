@@ -53,7 +53,7 @@ $collection = $products->getProducts($category, $search);
     <?php foreach ($collection as $c): ?>
       <div class="collectionItem">
         <a href="productPage.php?id=<?php echo $c['id']; ?>">
-          <img src="/HouseOfMoose_opdracht/uploads/<?php echo htmlspecialchars($c['fileName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>" class="collectionImage">
+          <img src="uploads/<?php echo htmlspecialchars($c['fileName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>" class="collectionImage">
         </a>
         <a class="collectionTitle" href="productPage.php?id=<?php echo $c['id']; ?>">
           <?php echo htmlspecialchars($c['title'], ENT_QUOTES, 'UTF-8'); ?>
