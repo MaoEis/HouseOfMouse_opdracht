@@ -17,7 +17,11 @@ class Products {
     protected $width;
     protected $upload_id; 
     protected $id;
+    private $db;
 
+    public function __construct() {
+        $this->db = Db::getConnection();
+    }
 
     public function getId() {
         return $this->id;
@@ -314,5 +318,26 @@ public function update() {
     }
 }
 
+public function deleteProduct($productId) {
+        try {
+            $sql = "DELETE FROM products WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+            return $stmt->execute(); // Returns true on success
+        } catch (PDOException $e) {
+            // Log error or handle it as needed
+            return false;
+        }
+    }
+
+    public function searchProducts($searchTerm) {
+        $searchParam = '%' . $searchTerm . '%';
+        $sql = "SELECT * FROM products WHERE title LIKE :search";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
   
 }

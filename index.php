@@ -1,10 +1,6 @@
 <?php 
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('location: login.php');
     exit;
@@ -20,8 +16,6 @@ $db = Db::getConnection();
 
 $products = new Products();
 $category = isset($_GET['category']) ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8') : '';
-
-// Search functionality
 $search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : '';
 $collection = $products->getProducts($category, $search);
 
@@ -58,25 +52,6 @@ $collection = $products->getProducts($category, $search);
         </form>
   </div>
 
-<!-- <div >
-  <div class="colBtnIndex"> 
-    <h4 class="colTitle">Colors</h4>
-      <a href="?category=">All</a>
-      <a href="?category=1"><div class=beige></div></a>
-      <a href="?category=2"><div class=seaShell></div></a>
-      <a href="?category=4"><div class=moonlight></div></a>
-      <a href="?category=3"><div class=whitewood></div></a>
-      <a href="?category=3"><div class=speckled></div></a>
-    </div>
-  
-  <div class="metBtnIndex"> 
-    <h4 class="colTitle">Metal</h4>
-      <a href="?category="><div class=silver></div></a>
-      <a href="?category=1"><div class=black></div></a>
-      <a href="?category=2"><div class=darkGold></div></a>
-    </div>
-</div> -->
-
   <div class="collection">
         <?php foreach ($collection as $c): ?>
             <div class="collectionItem">
@@ -94,26 +69,6 @@ $collection = $products->getProducts($category, $search);
     </div>
   
 </div>
-<script>
-$(".indexAddBtn").click(function() {
-        var productId = $(this).data("product-id");
-        var productName = $(this).data("product-name");
-
-        $.ajax({
-            url: 'assets/add_to_cart.php',
-            method: 'POST',
-            data: {
-                product_id: productId,
-                product_name: productName
-            },
-            success: function(response) {
-                alert(response.message);
-            },
-            error: function() {
-                alert('Failed to add product to cart');
-            }
-        });
-    });
-  </script>
+<script src="js/index.js"></script>
 </body>
 </html>

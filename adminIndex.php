@@ -1,11 +1,6 @@
 <?php 
 session_start();
 
-ob_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 if($_SESSION['loggedin'] !== true){
   header('location: login.php');
   exit;
@@ -18,27 +13,22 @@ include_once(__DIR__ . "/classes/Upload.php");
 
 
 $db = Db::getConnection();
- $products = new Products();
+$products = new Products();
 $category = isset($_GET['category']) ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8') : '';
-
-// Search functionality
 $search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : '';
 $collection = $products->getProducts($category, $search);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['id'])) {
     $productId = $_POST['id'];
 
-    // Delete query
-    $sql = "DELETE FROM products WHERE id = ?";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(1, $productId, PDO::PARAM_INT);
-if ($stmt->execute()) {
-    echo 'success';
-    exit();
-} else {
-    echo 'error';
-    exit();
-}
+    // Use the deleteProduct method
+    if ($products->deleteProduct($productId)) {
+        echo 'success';
+        exit();
+    } else {
+        echo 'error';
+        exit();
+    }
 }
 ?><!DOCTYPE html>
 <html lang="en">
@@ -48,82 +38,7 @@ if ($stmt->execute()) {
   <link rel="stylesheet" href="css/index.css">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    function showCustomModal(message) {
-        $('#modalMessage').text(message);
-        $('#customModal').fadeIn();
-
-        // Close modal when clicking the close button
-        $('#closeModal').click(function() {
-            $('#customModal').fadeOut();
-        });
-
-        // Close modal when clicking outside the modal content
-        $(window).click(function(event) {
-            if ($(event.target).is('#customModal')) {
-                $('#customModal').fadeOut();
-            }
-        });
-    }
-
-    let productIdToDelete = null;
-
-    function showConfirmModal(callback) {
-        $('#confirmModal').fadeIn();
-
-        // Handle Yes button
-        $('#confirmYes').off().click(function() {
-            $('#confirmModal').fadeOut();
-            if (callback) callback(true);
-        });
-
-        // Handle No button
-        $('#confirmNo').off().click(function() {
-            $('#confirmModal').fadeOut();
-            if (callback) callback(false);
-        });
-
-        // Close modal when clicking outside the modal content
-        $(window).click(function(event) {
-            if ($(event.target).is('#confirmModal')) {
-                $('#confirmModal').fadeOut();
-                if (callback) callback(false);
-            }
-        });
-    }
-
-    $('.adminDel').click(function() {
-        productIdToDelete = $(this).data('product-id');
-        console.log("Delete button clicked, product ID:", productIdToDelete);
-
-        showConfirmModal(function(isConfirmed) {
-            if (isConfirmed) {
-                $.ajax({
-                    url: 'adminIndex.php',
-                    type: 'POST',
-                    data: { id: productIdToDelete, action: 'delete' },
-                    success: function(response) {
-                        console.log("AJAX request successful, response:", response);
-                        if (response.trim() === 'success') {
-                            showCustomModal('Product deleted successfully.');
-                            $('[data-product-id="' + productIdToDelete + '"]').closest('.collectionItem').remove();
-                        } else {
-                            showCustomModal('Failed to delete the product. Please try again.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX request failed:", xhr.responseText, status, error);
-                        showCustomModal('An error occurred. Please try again later.');
-                    }
-                });
-            } else {
-                console.log("User canceled the deletion.");
-            }
-        });
-    });
-});
-</script>
+  <script src="js/adminIndex.js" defer></script>
 </head>
 <body>
 

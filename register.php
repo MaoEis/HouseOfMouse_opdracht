@@ -1,25 +1,28 @@
 <?php
-include_once(__DIR__ . "/classes/Users.php");
-include_once(__DIR__ . "/classes/Db.php");
+session_start();
 
-if(!empty($_POST)){
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/classes/Register.php';
 
-	try{
-		$user = new Users();
-		$user->setEmail($_POST['email']);
-		$user->setPassword($_POST['password']);
+$error = null;
 
-		$user->save();
-		header('Location: login.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-	} catch(\Throwable $th) {
-		$error = $th->getMessage();
-	}
-	
+    $registerHandler = new RegisterHandler();
+    $result = $registerHandler->handleRegistration($email, $password);
+
+    if ($result === true) {
+        header('Location: login.php');
+        exit();
+    } else {
+        $error = $result;
+    }
 }
 
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,9 +37,7 @@ if(!empty($_POST)){
 
 				<?php if( isset($error)):?>
 				<div class="formError">
-					<p>
-						⛔️ Sorry, we can't register you with that email address and password. Can you try again?
-					</p>
+					  <p>⛔️ <?= htmlspecialchars($error) ?></p>
 				</div>
 				<?php endif; ?>
 
