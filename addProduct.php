@@ -6,13 +6,13 @@ include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Products.php");
 include_once(__DIR__ . "/classes/Upload.php");
 
-$uploadsDir = __DIR__ . '/uploads/';
-if (!is_dir($uploadsDir)) {
-    mkdir($uploadsDir, 0775, true); // Create the directory if it doesn't exist
-    echo "Uploads directory created.<br>";
-} else {
-    echo "Uploads directory already exists.<br>";
-}
+// $uploadsDir = __DIR__ . '/uploads/';
+// if (!is_dir($uploadsDir)) {
+//     mkdir($uploadsDir, 0775, true); // Create the directory if it doesn't exist
+//     echo "Uploads directory created.<br>";
+// } else {
+//     echo "Uploads directory already exists.<br>";
+// }
 
 try {
     // Fetch categories from the database
@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
             if ($fileError === 0) {
                 if ($fileSize < 1000000000) {
                     $fileNameNew = uniqid('', true).".".$fileActualExt;
-                    $fileDestination = 'uploads/'.$fileNameNew;
+                    $fileDestination = 'uploads/';
                     if (move_uploaded_file($fileTmpName, $fileDestination)) {
                         echo "File uploaded successfully.<br>";
 
