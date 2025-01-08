@@ -2,21 +2,22 @@
 error_reporting(E_ALL);
 
 class Db {
-    private $host = 'junction.proxy.rlwy.net';
-    private $user = 'root';
-    private $pass = 'bqemkIoAJAMucwKIgVOPPkanONSUNOoZ';
-    private $dbname = 'railway';
-    private $port = '40235';
-
-    public $conn;
+    private static $conn;
+    private static $host = 'junction.proxy.rlwy.net';
+    private static $user = 'root';
+    private static $pass = 'bqemkIoAJAMucwKIgVOPPkanONSUNOoZ';
+    private static $dbname = 'railway';
+    private static $port = '40235';
 
     public static function getConnection() {
-        $this->conn= new mysqli($this->host, $this->user, $this->pass, $this->dbname, $this->port);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
-        return $this->conn;
+        self::$conn = new mysqli(self::$host, self::$user, self::$pass, self::$dbname, self::$port);
+    if (self::$conn->connect_error) {
+        die("Connection failed: " . self::$conn->connect_error);
     }
+    return self::$conn;
+    }
+
+    
     // public static function getConnection() {
     //     if (self::$conn == null) {
     //         try {
