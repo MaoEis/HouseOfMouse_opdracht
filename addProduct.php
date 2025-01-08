@@ -125,24 +125,29 @@ include_once(__DIR__ . "/classes/Upload.php");
 $uploadsDir = __DIR__ . 'uploads/';
 // Controleer of de uploads-map bestaat en maak deze indien nodig aan
 
+// Create directory if it does not exist
 if (!is_dir($uploadsDir)) {
-    mkdir($uploadsDir, 0775, true); // Create the directory if it doesn't exist
-    echo "Uploads directory created.<br>";
+    try {
+        if (!mkdir($uploadsDir, 0775, true)) {
+            throw new Exception("Failed to create uploads directory.");
+        }
+        echo "Uploads directory created.<br>";
+    } catch (Exception $e) {
+        echo $e->getMessage() . "<br>";
+    }
 }
 
 // Set directory permissions
-if (chmod($uploadsDir, 0777)) {
-    echo "Directory permissions set to 0777.<br>";
-} else {
-    echo "Failed to set directory permissions.<br>";
-}
-
-// Confirm if the directory is writable
-if (is_writable($uploadsDir)) {
-    echo "Uploads directory is writable.<br>";
+if (is_dir($uploadsDir)) {
+    if (!chmod($uploadsDir, 0777)) {
+        echo "Failed to set directory permissions.<br>";
+    } else {
+        echo "Directory permissions set to 0777.<br>";
+    }
 } else {
     echo "Uploads directory is not writable.<br>";
 }
+
 
 try {
     // Haal categorieën, kleuren en materialen op uit de database
