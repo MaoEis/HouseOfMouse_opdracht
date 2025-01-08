@@ -26,10 +26,6 @@ class LoginHandler {
             $user = new Users();
             $isAdmin = $user->canLogin($email, $password);
 
-             error_log("canLogin result: " . print_r($isAdmin, true));
-
-            // Debug output
-            var_dump($isAdmin);
 
             if ($isAdmin !== false) {
                 // Secure session management
