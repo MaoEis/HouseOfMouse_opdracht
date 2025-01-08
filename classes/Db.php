@@ -10,11 +10,16 @@ class Db {
     private static $port = '40235';
 
     public static function getConnection() {
-        self::$conn = new mysqli(self::$host, self::$user, self::$pass, self::$dbname, self::$port);
-    if (self::$conn->connect_error) {
-        die("Connection failed: " . self::$conn->connect_error);
-    }
-    return self::$conn;
+        if (!self::$conn) {
+            try {
+                $dsn = "mysql:host=" . self::$host . ";dbname=" . self::$dbname . ";port=" . self::$port;
+                self::$conn = new PDO($dsn, self::$user, self::$pass);
+                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("Database connection failed: " . $e->getMessage());
+            }
+        }
+        return self::$conn;
     }
 
     
