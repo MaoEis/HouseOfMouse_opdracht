@@ -137,16 +137,16 @@ if (!is_dir($uploadsDir)) {
     }
 }
 
-// Set directory permissions
-if (is_dir($uploadsDir)) {
-    if (!chmod($uploadsDir, 0777)) {
-        echo "Failed to set directory permissions.<br>";
-    } else {
-        echo "Directory permissions set to 0777.<br>";
-    }
-} else {
-    echo "Uploads directory is not writable.<br>";
-}
+// // Set directory permissions
+// if (is_dir($uploadsDir)) {
+//     if (!chmod($uploadsDir, 0777)) {
+//         echo "Failed to set directory permissions.<br>";
+//     } else {
+//         echo "Directory permissions set to 0777.<br>";
+//     }
+// } else {
+//     echo "Uploads directory is not writable.<br>";
+// }
 
 
 try {
