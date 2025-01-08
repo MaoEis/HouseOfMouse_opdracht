@@ -319,15 +319,11 @@ public function update() {
 }
 
 public function deleteProduct($productId) {
-        try {
-            $sql = "DELETE FROM products WHERE id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(1, $productId, PDO::PARAM_INT);
-            return $stmt->execute(); // Returns true on success
-        } catch (PDOException $e) {
-            // Log error or handle it as needed
-            return false;
-        }
+        $sql = "DELETE FROM products WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+        
+        return $stmt->execute();
     }
 
     public function searchProducts($searchTerm) {
@@ -339,5 +335,11 @@ public function deleteProduct($productId) {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getReviews($productId) {
+    $reviews = new Reviews();
+    return $reviews->getReviews($productId);
+}
+
   
 }

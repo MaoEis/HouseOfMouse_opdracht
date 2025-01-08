@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($reviews as $review) {
                     $reviewsHtml .= '
                         <div class="review">
-                            <p class="userRev">User ID: ' . htmlspecialchars($review['user_id']) . '</p>
-                            <p class="ratingRev">Rating: ' . htmlspecialchars($review['rating']) . '</p>
-                            <p class="commentRev">Comment: ' . htmlspecialchars($review['comment']) . '</p>
+                            <p class="userRev">User: ' . htmlspecialchars($review['user_id']) . '</p>
+                            <p class="ratingRev">Rating: ' . htmlspecialchars($review['rating']) . ' x ⭐️</p>
+                            <p class="commentRev">' . htmlspecialchars($review['comment']) . '</p>
                         </div>';
                 }
 

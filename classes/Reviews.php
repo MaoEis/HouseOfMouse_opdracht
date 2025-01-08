@@ -53,4 +53,26 @@ class Reviews{
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+     public function getReviewsByProductId($productId) {
+        try {
+            $sql = "SELECT * FROM reviews WHERE product_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$productId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Failed to fetch reviews: " . $e->getMessage());
+        }
+    }
+    public function getReviews($productId) {
+        try {
+            $conn = Db::getConnection();
+            $sql = "SELECT * FROM reviews WHERE product_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$productId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Failed to fetch reviews: " . $e->getMessage());
+        }
+    }
 }
