@@ -10,10 +10,24 @@ $(".indexAddBtn").click(function () {
       product_name: productName,
     },
     success: function (response) {
-      alert(response.message);
+      if (response.message) {
+        showSuccessModal();
+      } else {
+        alert("Failed to add product to cart");
+      }
     },
     error: function () {
       alert("Failed to add product to cart");
     },
   });
 });
+
+function showSuccessModal() {
+  const successModal = document.getElementById("successModal");
+  successModal.style.display = "flex";
+
+  const closeModalButton = document.getElementById("closeModal");
+  closeModalButton.addEventListener("click", function () {
+    successModal.style.display = "none";
+  });
+}

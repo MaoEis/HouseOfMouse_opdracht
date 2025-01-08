@@ -12,9 +12,9 @@ include_once(__DIR__ . "/../classes/Db.php");
 include_once(__DIR__ . "/../classes/Cart.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = $_SESSION['user_id']; // Assuming user_id is stored in session
+    $userId = $_SESSION['user_id']; 
     $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
-    $quantity = 1; // Default quantity
+    $quantity = 1; 
 
     if (!$productId) {
         echo json_encode(['message' => 'Invalid product ID']);
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = $cart->addToCart($userId, $productId, $quantity);
 
     if ($success) {
-        echo json_encode(['message' => 'Product added to cart successfully']);
+        echo json_encode(['message' => 'Success']);
     } else {
         echo json_encode(['message' => 'Failed to add product to cart']);
     }
