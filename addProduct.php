@@ -122,16 +122,26 @@ include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Products.php");
 include_once(__DIR__ . "/classes/Upload.php");
 
-$uploadsDir = __DIR__ . '/uploads/';
+$uploadsDir = __DIR__ . 'uploads/';
 // Controleer of de uploads-map bestaat en maak deze indien nodig aan
+
 if (!is_dir($uploadsDir)) {
-    if (mkdir($uploadsDir, 0775, true)) {
-        echo "Uploads directory created.<br>";
-    } else {
-        die("Failed to create uploads directory. Check permissions.");
-    }
+    mkdir($uploadsDir, 0775, true); // Create the directory if it doesn't exist
+    echo "Uploads directory created.<br>";
+}
+
+// Set directory permissions
+if (chmod($uploadsDir, 0777)) {
+    echo "Directory permissions set to 0777.<br>";
 } else {
-    echo "Uploads directory already exists.<br>";
+    echo "Failed to set directory permissions.<br>";
+}
+
+// Confirm if the directory is writable
+if (is_writable($uploadsDir)) {
+    echo "Uploads directory is writable.<br>";
+} else {
+    echo "Uploads directory is not writable.<br>";
 }
 
 try {
