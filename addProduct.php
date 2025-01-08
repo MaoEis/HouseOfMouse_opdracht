@@ -122,7 +122,7 @@ include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Products.php");
 include_once(__DIR__ . "/classes/Upload.php");
 
-$uploadsDir = __DIR__ . 'uploads/';
+$uploadsDir = __DIR__ . '/uploads/';
 // Controleer of de uploads-map bestaat en maak deze indien nodig aan
 
 // Create directory if it does not exist
