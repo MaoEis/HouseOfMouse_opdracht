@@ -45,7 +45,7 @@ class LoginHandler {
                 return "Invalid email or password.";
             }
         } catch (Throwable $th) {
-            error_log($th->getMessage()); // Log error for debugging
+             error_log("Error in handleLogin: " . $th->getMessage());
             return "Something went wrong. Please try again later.";
         }
     }
